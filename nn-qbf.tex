@@ -49,7 +49,7 @@ Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCull
 Le modèle de McCulloh-Pitts a été décliné de multiple manière au cours du temps. Les déclinaisons auxquelles nous allons nous intérèsser sont appelé le modèle Perceptron et le modèle Sigmoid. Ces deux modèles introduisent la notion de poids qui est au coeur du processus d'apprentissage d'un réseau de neuronne. 
 
 	\subsection{Définition: Modèle Perceptron}
-		Le premier modèle du Perceptron a été introduit en 1958 par Frank Rosenblatt. Celui ci a ensuite été repris et perfectionné dans les années soixante par Minsky et Papert. Ce modèle reprend la définition précédente sauf que pour chaque entrée $x_i$ ($i$ $\in$ $\llbracket 1~;~n \rrbracket$) on y associera une valeur (les fameux poids) $w_i$ $\in$ $\mathbb{R}$. 
+		Le premier modèle du Perceptron a été introduit en 1958 par Frank Rosenblatt. Celui-ci a ensuite été repris et perfectionné dans les années soixante par Minsky et Papert. Ce modèle reprend la définition précédente sauf que pour chaque entrée $x_i$ ($i$ $\in$ $\llbracket 1~;~n \rrbracket$) on y associera une valeur (les fameux poids) $w_i$ $\in$ $\mathbb{R}$. 
 		On définit alors la fonction $f$ de la façon suivante : 
 		
 		\[\fonction{f}{\mathbb{R}^n}{\mathbb{R}}{(x_1,....x_n)}{\sum_{i=1}^{n} {w_ix_i}}. \]
@@ -61,7 +61,7 @@ Le modèle de McCulloh-Pitts a été décliné de multiple manière au cours du 
 	 		 \end{cases} \] \\ 
 
 	 
-Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neuronne. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neuronne produit la meilleur sortie possible. Pour répondre au besoin du processus d'apprentissage l'algorithme de la déscente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neuronne vers la valeur voulu. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$ et que la fonction $g$ ne sera  plus une fonction en escalié mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
+Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neuronne. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neuronne produise la meilleure sortie possible. Pour répondre au besoin du processus d'apprentissage, l'algorithme de la déscente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neuronne vers la valeur voulue. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$, cependant la fonction $g$ ne sera  plus une fonction en escalier mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
 
 	\subsection{Définition: Modèle Sigmoid}
 	 Le modèle Sigmoid est défini de la même manière que le modèle perceptron mais il y diffère à la fonction $g$. La fonction $g$ aura pour particularité d'être continue. On appelle cette fonction, la fonction sigmoid.  
@@ -69,11 +69,11 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 		
 	\subsection{Définition: Réseau de Neuronne}
 	
-	Nous avons défini dans cette partie tout les outils nécessaire pour l'utilisation d'un réseau de neuronne dans divers problèmes. Nous allons maintenant voir comment nous pouvons enseigner à un réseaux et comment celui ci peut-il apprendre. 	
+	Nous avons défini dans cette partie tous les outils nécessaire pour l'utilisation d'un réseau de neuronne dans divers problèmes. Nous allons maintenant voir comment nous pouvons enseigner à un réseau et comment celui-ci peut apprendre. 	
 	
 \section{L'Apprentissage supervisé}
 	
-	L'une des particularités des réseaux de neuronnes et le fait de pouvoir évoluer au cours du temps. Cette évolution va se faire en faisant varrier les poids comme dit précèdement. 
+	L'une des particularités des réseaux de neuronnes et le fait de pouvoir évoluer au cours du temps. Cette évolution va se faire en faisant varier les poids comme dit précèdement. 
  
 	\subsection{Définition: Fonction d'erreur}
 
