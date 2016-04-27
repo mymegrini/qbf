@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amssymb, bm}
+\usepackage{mathtools, bm}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+
+% fonction pour définir une fonction 
+\newcommand{\fonction}[5]{
+	\begin{array}{ccccc}
+#1 & : & #2 & \to & #3\\
+	& & #4 & \mapsto & #5\\ 
+	\end{array}
+}
+
+\begin{document}
+\section[Titre plus court]{Les Neuronnes}
+
+Le premier modèle mathématique et informatique du neuronne biologique a été donné par Warren McCulloh et Walter Pitts en 1943.
+Ce modèle inspiré de la neurobiologique, fait intervenir n entrées auxquelles des fonctions y seront appliquées afin d'en obtenir une sortie.
+Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCulloh-Pitts     
+
+\subsection{Définition: Modèle de McCulloh-Pitts}
+	Soit la fonction  
+
+	\[\fonction{\varphi}{\mathbb{R}^n}{\left\{0,1\right\}}{(x_1,....,x_n)}{\varphi(x_1,....,x_n)} \]
+
+	tel que  
+	\[\varphi (x_1,...,x_n) = g(f(x_1,....,x_n)). \]  
+
+	\begin{enumerate}
+		\item $f$ est définie comme étant la fonction somme 
+		\[\fonction{f}{\mathbb{R}^n}{\mathbb{R}}{(x_1,....,x_n)}{\sum_{i=1}^{n} {x_i}} \] 
+		\item On appelle $g$ la fonction d'activation à seuil. Celle-ci est définie de la manière suivante :
+
+		\[g(x) = \begin{cases} 0 &\mbox{Si } x < \theta \\
+				 1 & \mbox{Si } x \geq \theta
+	 		 \end{cases} 
+		\]
+	\end{enumerate}
+	
+	\textbf{Remarque} : La valeur $\theta$  qu'on utilise dans la fonction $g$ est appelé le seuil.\\
+	
+
+Le modèle de McCulloh-Pitts a été décliné de multiple manière au cours du temps. Les déclinaisons auxquelles nous allons nous intérèsser sont appelé le modèle Perceptron et le modèle Sigmoid. Ces deux modèles introduisent la notion de poids qui est au coeur du processus d'apprentissage d'un réseau de neuronne. 
+
+	\subsection{Définition: Modèle Perceptron}
+		Le premier modèle du Perceptron a été introduit en 1958 par Frank Rosenblatt. Celui ci a ensuite été repris et perfectionné dans les années soixante par Minsky et Papert. Ce modèle reprend la définition précédente sauf que pour chaque entrée $x_i$ ($i$ $\in$ $\llbracket 1~;~n \rrbracket$) on y associera une valeur (les fameux poids) $w_i$ $\in$ $\mathbb{R}$. 
+		On définit alors la fonction $f$ de la façon suivante : 
+		
+		\[\fonction{f}{\mathbb{R}^n}{\mathbb{R}}{(x_1,....x_n)}{\sum_{i=1}^{n} {w_ix_i}}. \]
+
+	
+	\textbf{Remarque} : On note parfois \[b = -\theta \]  et on appel cette valeur le bias (ou inclinaison en français xD). La fonction $g$ est alors définit de la manière suivante :   
+		\[g(x) = \begin{cases} 0 &\mbox{Si } x + b < 0 \\
+				 1 & \mbox{Si } x + b \geq 0
+	 		 \end{cases} \] \\ 
+
+	 
+Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neuronne. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neuronne produit la meilleur sortie possible. Pour répondre au besoin du processus d'apprentissage l'algorithme de la déscente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neuronne vers la valeur voulu. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$ et que la fonction $g$ ne sera  plus une fonction en escalié mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
+
+	\subsection{Définition: Modèle Sigmoid}
+	 Le modèle Sigmoid est défini de la même manière que le modèle perceptron mais il y diffère à la fonction $g$. La fonction $g$ aura pour particularité d'être continue. On appelle cette fonction, la fonction sigmoid.  
+		  \[ \fonction{g}{\mathbb{R}}{\left[0,1\right]}{x}{ \frac{1}{1+ e^{-x}}} \]
+		
+	\subsection{Définition: Réseau de Neuronne}
+	
+	Nous avons défini dans cette partie tout les outils nécessaire pour l'utilisation d'un réseau de neuronne dans divers problèmes. Nous allons maintenant voir comment nous pouvons enseigner à un réseaux et comment celui ci peut-il apprendre. 	
+	
+\section{L'Apprentissage supervisé}
+	
+	L'une des particularités des réseaux de neuronnes et le fait de pouvoir évoluer au cours du temps. Cette évolution va se faire en faisant varrier les poids comme dit précèdement. 
+ 
+	\subsection{Définition: Fonction d'erreur}
+
+
+ \end{document}
+
