@@ -68,12 +68,18 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 		  \[ \fonction{g}{\mathbb{R}}{\left[0,1\right]}{x}{ \frac{1}{1+ e^{-x}}} \]
 		
 	\subsection{Définition: Réseau de Neuronne}
+ 	Un réseau de neuronne est un ensemble de neuronnes connectés entre eux. Ce réseau est composé de plusieurs couches : 
+	\begin{enumerate}	
+		\item la couche d'entrée : Cette couche est composée de neuronnes dont leurs entrées n'est pas la sortie d'autre neuronne. 
+		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neuronne. Les entrées des neuronnes sont les sorties de ceux de la couche précèdente.
+		\item la couche de sortie : Cette couche nous donne le résultat du réseau.
+	\end{enumerate}		
+		
+	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neuronne et comment est-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problème. 	
 	
-	Nous avons défini dans cette partie tous les outils nécessaire pour l'utilisation d'un réseau de neuronne dans divers problèmes. Nous allons maintenant voir comment nous pouvons enseigner à un réseau et comment celui-ci peut apprendre. 	
+\section{L'Apprentissage}
 	
-\section{L'Apprentissage supervisé}
-	
-	L'une des particularités des réseaux de neuronnes et le fait de pouvoir évoluer au cours du temps. Cette évolution va se faire en faisant varier les poids comme dit précèdement. 
+	L'une des particularités des réseaux de neuronnes est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. 
  
 	\subsection{Définition: Fonction d'erreur}
 
