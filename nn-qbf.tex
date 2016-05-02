@@ -8,6 +8,7 @@
 \usepackage{mathtools, bm}
 \usepackage{mathrsfs}
 \usepackage{stmaryrd}
+\usepackage{graphicx}
 
 % fonction pour définir une fonction 
 \newcommand{\fonction}[5]{
@@ -74,15 +75,27 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neuronne. Les entrées des neuronnes sont les sorties de ceux de la couche précèdente.
 		\item la couche de sortie : Cette couche nous donne le résultat du réseau.
 	\end{enumerate}		
+
 		
-	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neuronne et comment est-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problème. 	
+	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neuronne et comment est-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problème. 
 	
-\section{L'Apprentissage}
 	
-	L'une des particularités des réseaux de neuronnes est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. 
+\section{L'Apprentissage}	
+L'une des particularités des réseaux de neuronnes est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. \\
  
 	\subsection{Définition: Fonction d'erreur}
+		Soit C une fonctiom telle que :	
+		  \[ \fonction{C}{E}{\mathbb{R}}{x}{\frac{1}{2}(y(x)-a)^{2}}. \]
+
+		avec $E$ un enssemble d'entrées possible dépendant du réseau utilisé et dont $y(x)$ correspondant au réel résultat attendu comme sortie et $a$ correpondant au résultat produit par le réseau. Cette fonction est appelé la fonction d'erreur. \\
 
 
- \end{document}
+ \textbf{Remarque }: 
+	\begin{enumerate} 
+		\item La fonction $C$ définit ne concerne seulement qu'une valeur de l'enssemble $E$. Afin que le réseau de neuronne soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(x) = \sum_{x \in E} C(x)$.
+		\item L'optimisation de la fonction $\gamma$ dépendra de l'enssemble $E$ que nous devrons fournir.
+	\end{enumerate}
+
+L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{n+1})$ (avec $(w_1,.....,w_n)$ les poids du réseau de neuronnes et $w_{n+1}$ qui correspond à $\theta$) qui permettra d'approximer $\gamma(x)$ vers zéro. Nous allons effectuer cette optimisation à l'aide de l'algoritme de descente de gradient.
+\end{document}
 
