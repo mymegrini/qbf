@@ -84,18 +84,30 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 L'une des particularités des réseaux de neuronnes est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. \\
  
 	\subsection{Définition: Fonction d'erreur}
-		Soit C une fonctiom telle que :	
-		  \[ \fonction{C}{E}{\mathbb{R}}{x}{\frac{1}{2}(y(x)-a)^{2}}. \]
+		Soit $C_{x}$ une fonction telle que :	
+		  \[ \fonction{C_{x}}{\mathbb{R}^{n+1}}{\mathbb{R}}{(w_1,.....,w_{n+1})}{\frac{1}{2}(y(x)-\Phi_{x}(w_1,.....,w_{n+1}))^{2}}. \]
 
-		avec $E$ un enssemble d'entrées possible dépendant du réseau utilisé et dont $y(x)$ correspondant au réel résultat attendu comme sortie et $a$ correpondant au résultat produit par le réseau. Cette fonction est appelé la fonction d'erreur. \\
+		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neuronne et $x$ correspondant à une entrée chosit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction d'erreur. \\
 
 
  \textbf{Remarque }: 
 	\begin{enumerate} 
-		\item La fonction $C$ définit ne concerne seulement qu'une valeur de l'enssemble $E$. Afin que le réseau de neuronne soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(x) = \sum_{x \in E} C(x)$.
+		\item On définit $E$ comme étant un ensemble d'entrée pour un réseau de neuronne particulier dont le résultat voulu est connu. 
+		\item La fonction $C_{x}$ définit ne concerne seulement qu'une valeur de l'enssemble $E$. Afin que le réseau de neuronne soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(w_1,.....,w_{n+1}) = \sum_{x \in E} C_{x}(w_1,.....,w_{n+1})$.
 		\item L'optimisation de la fonction $\gamma$ dépendra de l'enssemble $E$ que nous devrons fournir.
 	\end{enumerate}
 
-L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{n+1})$ (avec $(w_1,.....,w_n)$ les poids du réseau de neuronnes et $w_{n+1}$ qui correspond à $\theta$) qui permettra d'approximer $\gamma(x)$ vers zéro. Nous allons effectuer cette optimisation à l'aide de l'algoritme de descente de gradient.
-\end{document}
+L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{n+1})$ qui permettra d'approximer $\gamma$ vers zéro. Nous allons effectuer cette optimisation à l'aide de l'algorithme de descente de gradient.
 
+	\subsection{Définition: Gradient}
+		Soit $f: \mathbb{R}^{n} \to \mathbb{R}$ une fonction à plusieurs variables à valeurs réelles. On appelle gradient de $f$, noté $\nabla f$
+		\[ \nabla f= \begin{pmatrix} 
+					\frac{\partial f}{\partial x_1} \\
+						\cdot \\
+						\cdot \\
+						\cdot \\
+						\frac{\partial f}{\partial x_n}\\
+				 \end{pmatrix} \] 
+
+	\subsection{Algorithme du Gradient}
+\end{document}
