@@ -9,6 +9,9 @@
 \usepackage{mathrsfs}
 \usepackage{stmaryrd}
 \usepackage{graphicx}
+%\usepackage[]{algorithm2e}
+\usepackage[]{algorithm}
+\usepackage[]{algorithmic}
 
 % fonction pour définir une fonction 
 \newcommand{\fonction}[5]{
@@ -56,7 +59,7 @@ Le modèle de McCulloh-Pitts a été décliné de multiple manière au cours du 
 		\[\fonction{f}{\mathbb{R}^n}{\mathbb{R}}{(x_1,....x_n)}{\sum_{i=1}^{n} {w_ix_i}}. \]
 
 	
-	\textbf{Remarque} : On note parfois \[b = -\theta \]  et on appel cette valeur le bias (ou inclinaison en français xD). La fonction $g$ est alors définit de la manière suivante :   
+	\textbf{Remarque} : On note parfois \[b = -\theta \]  et on appel cette valeur le bias (ou inclinaison en français). La fonction $g$ est alors définit de la manière suivante :   
 		\[g(x) = \begin{cases} 0 &\mbox{Si } x + b < 0 \\
 				 1 & \mbox{Si } x + b \geq 0
 	 		 \end{cases} \] \\ 
@@ -103,11 +106,69 @@ L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{
 		Soit $f: \mathbb{R}^{n} \to \mathbb{R}$ une fonction à plusieurs variables à valeurs réelles. On appelle gradient de $f$, noté $\nabla f$
 		\[ \nabla f= \begin{pmatrix} 
 					\frac{\partial f}{\partial x_1} \\
-						\cdot \\
-						\cdot \\
-						\cdot \\
-						\frac{\partial f}{\partial x_n}\\
+					\vdots\\	
+					\frac{\partial f}{\partial x_n}\\
 				 \end{pmatrix} \] 
+\newpage
 
-	\subsection{Algorithme du Gradient}
+\subsection{Algorithme du Gradient}
+ 	
+	Cette algorithme va permettre de générer une suite  $x_{1},....,x_{k} \in \mathbb{R}^{n+1}$ jusqu'à que la condition d'arrêt soit satisfaite. On note $x_{1},....,x_{k}$ les différents vecteurs poids que l'algorithme calculera.
+
+	\begin{algorithm}
+	\caption{La Descente de Gradient}
+	\begin{algorithmic}
+	\REQUIRE $x_{0} \in \mathbb{R}^{n+1}$ vecteur poids qu'on choisit initialement \\ 
+	$c$ nombre d'étape maximum qu'on autorise  \\ 
+	$\varepsilon \ge 0$ seuil qu'on choisit dont le gradient ne doit pas franchir \\ 
+	$k=0$
+	\WHILE{$\mid \mid \nabla f(x_{k}) \mid \mid  \ge \varepsilon$ and $k \neq c  $}
+		\STATE Simulation de calcul de $\nabla f(x_{k})$ \;
+		\STATE calcule $\alpha_{k} > 0 $ \;
+		\STATE $ x_{k+1} = x_{k} - \alpha_{k} \nabla f(x_{k}) $ \;
+		\STATE k++; 
+	\ENDWHILE
+	\end{algorithmic}
+	\end{algorithm} 
+\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosie avec précaution. En effet, si celui-ci est trops grands, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
+\newline
+On calcul le pas d'apprentissage à l'aide de l'algorithme suivant: 
+	\begin{algorithm}
+	\caption{Calcule du pas d'apprentissage}
+	\begin{algorithmic}
+	\REQUIRE $x_{0}$ vecteur poids qu'on choisit initialement \\ 
+	$k=0$
+	\STATE Calculer $\nabla f(x_{K})$ \; 
+	\STATE Choisir $\alpha_{k}$ afin de minimiser la fonction $h(\alpha) = f(x_{k}-\alpha \nabla f(x_{k}))$;
+	\end{algorithmic}
+	\end{algorithm} 
+\newline 
+
+\textbf{Remarque } :\begin{enumerate} 
+	\item $\alpha_{k}$ sera bien-sûr la valeur pour laquelle on aura $h'(\alpha_{k}) = 0$.
+	\item Dans les deux algorithmes précèdent le vecteur $x_{0}$ est choisie aléatoirement. 
+	\end{enumerate}
+\subsection{Rétropropagation}
+Nous avons vu dans la partie précédente, comment nous pouvons minimiser la fonction $\gamma$ à condition d'avoir son gradient. Cette étape
+devient très vite fastidieuse lorsque le réseau de neuronne est formé de plusieurs couches de plusieurs neuronnes, car la fonction qui
+définira ce réseau sera la composée de toutes les fonctions définissant les neuronnes contenu dans celui-ci. Ce problème va être résolue 
+grâce à la rétropropagation qui est une méthode qui va nous permettre de calculer le gradient de n'importe quelle réseau.
+
+\subsection {B-Diagramme}
+Pour parler de la rétropropagation  nous nous devons d'introduire une nouvelle structure qui est le B-Diagramme (Backpropagation diagramme).
+Ce diagramme représente les neuronnes utilisés dans notre réseau mais dans lesquelle nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
+\newline 
+La rétropropagation ce divise en deux étapes :
+\begin{enumerate}
+\item L'étape de feed-forward : Cette étape consite à parcourir notre réseau de gauche à droite afin de calculer pour chaque neuronne, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le procéssus sera réitéré.
+\item L'étape de rétropropagation : Dans cette étape le réseau sera parcourus de droite à gauche et la valeur stockée à gauche sera 
+utilisée. Cette étape est divisée en plusieurs cas :
+\begin{enumerate}
+\item La composition  :
+\item L'addition : 
+\item Les entrées avec poids : 
+\end{enumerate}
+\end{enumerate} 
+	
+	
 \end{document}
