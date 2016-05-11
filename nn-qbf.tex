@@ -9,6 +9,7 @@
 \usepackage{mathrsfs}
 \usepackage{stmaryrd}
 \usepackage{graphicx}
+\usepackage{tikz}
 %\usepackage[]{algorithm2e}
 \usepackage[]{algorithm}
 \usepackage[]{algorithmic}
@@ -22,9 +23,9 @@
 }
 
 \begin{document}
-\section[Titre plus court]{Les Neuronnes}
+\section[Titre plus court]{Les Neurones}
 
-Le premier modèle mathématique et informatique du neuronne biologique a été donné par Warren McCulloh et Walter Pitts en 1943.
+Le premier modèle mathématique et informatique du neurone biologique a été donné par Warren McCulloh et Walter Pitts en 1943.
 Ce modèle inspiré de la neurobiologique, fait intervenir n entrées auxquelles des fonctions y seront appliquées afin d'en obtenir une sortie.
 Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCulloh-Pitts     
 
@@ -46,14 +47,32 @@ Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCull
 	 		 \end{cases} 
 		\]
 	\end{enumerate}
-	
-	\textbf{Remarque} : La valeur $\theta$  qu'on utilise dans la fonction $g$ est appelée le seuil.\\
+
+%**************************************************************************************% 
+% code pour la figure 2
+
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\draw[->] (0.7,2.5) node [below] {$x_{2}$}-- (2.5,2.5);
+	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left\{0,1\right\}$} (7.8,2.5)-- (8,2.5);
+	\draw[->] (0.7,3.5) node [below] {$x_{1}$} -- (2.6,3);
+	\draw[->] (0.7,1.5) node [below] {$x_{n}$}-- (2.6,2);
+	\draw (4.5,2.5) node {$ \begin{cases} 0 &\mbox{Si } \sum_{i=1}^{n} {x_i} < \theta \\ 1 & \mbox{Si } \sum_{i=1}^{n} {x_i} \geq \theta \end{cases} $} circle [x radius= 2, y radius=1.1];
+	\draw (4.5,0) node { \textbf{figure 1 - Modèle de McCulloh-Pitts} };
+\end{tikzpicture}
+\end{center}
+\vfill
+%**************************************************************************************% 
+
+\textbf{Remarque} : La valeur $\theta$  qu'on utilise dans la fonction $g$ est appelée le seuil.\\
 	
 
-Le modèle de McCulloh-Pitts a été décliné de multiple manière au cours du temps. Les déclinaisons auxquelles nous allons nous intérèsser sont appelé le modèle Perceptron et le modèle Sigmoid. Ces deux modèles introduisent la notion de poids qui est au coeur du processus d'apprentissage d'un réseau de neuronne. 
+Le modèle de McCulloh-Pitts a été décliné en de multiple manières au cours du temps. Les déclinaisons auxquelles nous allons nous intérèsser sont appelées le modèle Perceptron et le modèle Sigmoid. Ces deux modèles introduisent la notion de poids qui est au coeur du processus d'apprentissage d'un réseau de neurone. 
 
-	\subsection{Définition: Modèle Perceptron}
-		Le premier modèle du Perceptron a été introduit en 1958 par Frank Rosenblatt. Celui-ci a ensuite été repris et perfectionné dans les années soixante par Minsky et Papert. Ce modèle reprend la définition précédente sauf que pour chaque entrée $x_i$ ($i$ $\in$ $\llbracket 1~;~n \rrbracket$) on y associera une valeur (les fameux poids) $w_i$ $\in$ $\mathbb{R}$. 
+\subsection{Définition: Modèle Perceptron}
+		Le premier modèle du Perceptron a été introduit en 1958 par Frank Rosenblatt. Celui-ci a ensuite été repris et perfectionné dans les années soixante par Minsky et Papert. Ce modèle reprend la définition précédente sauf que pour chaque entrées $x_i$ ($i$ $\in$ $\llbracket 1~;~n \rrbracket$) on y associera une valeur (les fameux poids) $w_i$ $\in$ $\mathbb{R}$. 
 		On définit alors la fonction $f$ de la façon suivante : 
 		
 		\[\fonction{f}{\mathbb{R}^n}{\mathbb{R}}{(x_1,....x_n)}{\sum_{i=1}^{n} {w_ix_i}}. \]
@@ -62,29 +81,63 @@ Le modèle de McCulloh-Pitts a été décliné de multiple manière au cours du 
 	\textbf{Remarque} : On note parfois \[b = -\theta \]  et on appel cette valeur le bias (ou inclinaison en français). La fonction $g$ est alors définit de la manière suivante :   
 		\[g(x) = \begin{cases} 0 &\mbox{Si } x + b < 0 \\
 				 1 & \mbox{Si } x + b \geq 0
-	 		 \end{cases} \] \\ 
-
+	 		 \end{cases} \] \\
+%**************************************************************************************% 
+% code pour la figure 2
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\draw[->] (0.7,2.5) node [below] {$x_{2}$}-- node [below] {$w_{2}$} (2.5,2.5);
+	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left\{0,1\right\}$} (7.8,2.5)-- (8,2.5);
+	\draw[->] (0.7,3.5) node [below] {$x_{1}$} -- node [below] {$w_{1}$} (2.6,3);
+	\draw[->] (0.7,1.5) node [below] {$x_{n}$}-- node [below] {$w_{n}$} (2.6,2);
+	\draw (4.5,2.5) node {$ \begin{cases} 0 &\mbox{Si } \sum_{i=1}^{n} {x_iw_i} < \theta \\ 1 & \mbox{Si } \sum_{i=1}^{n} {x_iw_i} \geq \theta \end{cases} $} circle [x radius= 2, y radius=1.1];
+	\draw (4.5,0) node { \textbf{figure 2 - Perceptron} };
+\end{tikzpicture}
+\end{center}
+\vfill
+%**************************************************************************************% 
 	 
-Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neuronne. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neuronne produise la meilleure sortie possible. Pour répondre au besoin du processus d'apprentissage, l'algorithme de la déscente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neuronne vers la valeur voulue. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$, cependant la fonction $g$ ne sera  plus une fonction en escalier mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
-
+Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neurone. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neurone produise la meilleure sortie possible. Pour répondre au besoin du processus d'apprentissage, l'algorithme de la déscente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neurone vers la valeur voulue. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$, cependant la fonction $g$ ne sera  plus une fonction en escalier mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
+% préciser le fait que avec une fonction en escalier il y a des gros saut et qu'avec une fonction continue il y a des petits sauts
+% la particularitée ???
 	\subsection{Définition: Modèle Sigmoid}
 	 Le modèle Sigmoid est défini de la même manière que le modèle perceptron mais il y diffère à la fonction $g$. La fonction $g$ aura pour particularité d'être continue. On appelle cette fonction, la fonction sigmoid.  
 		  \[ \fonction{g}{\mathbb{R}}{\left[0,1\right]}{x}{ \frac{1}{1+ e^{-x}}} \]
+
+
+%**************************************************************************************% 
+% code pour la figure 3 
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\draw[->] (0.7,2.5) node [below] {$x_{2}$}-- node [below] {$w_{2}$} (2.5,2.5);
+	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left\{0,1\right\}$} (7.8,2.5)-- (8,2.5);
+	\draw[->] (0.7,3.5) node [below] {$x_{1}$} -- node [below] {$w_{1}$} (2.6,3);
+	\draw[->] (0.7,1.5) node [below] {$x_{n}$}-- node [below] {$w_{n}$} (2.6,2);
+	\draw (4.5,2.5) node {$ \begin{cases} 0 &\mbox{Si } \sum_{i=1}^{n} {x_iw_i} < \theta \\ 1 & \mbox{Si } \sum_{i=1}^{n} {x_iw_i} \geq \theta \end{cases} $} circle [x radius= 2, y radius=1.1];
+	\draw (4.5,0) node { \textbf{figure 3 - Perceptron} };
+\end{tikzpicture}
+\end{center}
+\vfill
+%**************************************************************************************% 
 		
-	\subsection{Définition: Réseau de Neuronne}
- 	Un réseau de neuronne est un ensemble de neuronnes connectés entre eux. Ce réseau est composé de plusieurs couches : 
+	\subsection{Définition: Réseau de Neurone}
+ 	Un réseau de neurone est un ensemble de neurones connectés entre eux. Ce réseau est composé de plusieurs couches : 
 	\begin{enumerate}	
-		\item la couche d'entrée : Cette couche est composée de neuronnes dont leurs entrées n'est pas la sortie d'autre neuronne. 
-		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neuronne. Les entrées des neuronnes sont les sorties de ceux de la couche précèdente.
-		\item la couche de sortie : Cette couche nous donne le résultat du réseau.
+		\item la couche d'entrée : Cette couche est composée de neurones dont leurs entrées n'est pas la sortie d'autre neurone. 
+		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neurone. Les entrées des neurones sont les sorties de ceux de la couche précèdente.
+		\item la couche de sortie : Cette couche nous donne le résultat du réseau. Elle peut être formée d'un ou plusieur neurone.
 	\end{enumerate}		
 
 		
-	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neuronne et comment est-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problème. 
+	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neurone et comment etait-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problème. % accoder problème ??? 
 	
 	
 \section{L'Apprentissage}	
-L'une des particularités des réseaux de neuronnes est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. \\
+L'une des particularités des réseaux de neurones est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. \\
  
 	\subsection{Définition: Fonction d'erreur}
 		Soit $C_{x}$ une fonction telle que :	
@@ -94,13 +147,13 @@ L'une des particularités des réseaux de neuronnes est le fait de pouvoir appre
 
 
  \textbf{Remarque }: 
-	\begin{enumerate} 
-		\item On définit $E$ comme étant un ensemble d'entrée pour un réseau de neuronne particulier dont le résultat voulu est connu. 
-		\item La fonction $C_{x}$ définit ne concerne seulement qu'une valeur de l'enssemble $E$. Afin que le réseau de neuronne soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(w_1,.....,w_{n+1}) = \sum_{x \in E} C_{x}(w_1,.....,w_{n+1})$.
-		\item L'optimisation de la fonction $\gamma$ dépendra de l'enssemble $E$ que nous devrons fournir.
+	\begin{enumerate} %voulu avec un e ou sans e ?? 
+		\item On définit $E$ comme étant un ensemble d'entrée pour un réseau de neurone particulier dont le résultat voulu est connu. 
+		\item La fonction $C_{x}$ définit ne concerne seulement qu'une valeur de l'enssemble $E$. Afin que le réseau de neurone soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(w_1,.....,w_{n+1}) = \sum_{x \in E} C_{x}(w_1,.....,w_{n+1})$.
+		\item L'optimisation de la fonction $\gamma$ dépendra de l'ensemble $E$ que nous devrons fournir. 
 	\end{enumerate}
 
-L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{n+1})$ qui permettra d'approximer $\gamma$ vers zéro. Nous allons effectuer cette optimisation à l'aide de l'algorithme de descente de gradient.
+L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n+1})$ qui permettra d'approximer $\gamma$ vers zéro. Nous allons effectuer cette optimisation à l'aide de l'algorithme de descente de gradient.
 
 	\subsection{Définition: Gradient}
 		Soit $f: \mathbb{R}^{n} \to \mathbb{R}$ une fonction à plusieurs variables à valeurs réelles. On appelle gradient de $f$, noté $\nabla f$
@@ -109,7 +162,6 @@ L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{
 					\vdots\\	
 					\frac{\partial f}{\partial x_n}\\
 				 \end{pmatrix} \] 
-\newpage
 
 \subsection{Algorithme du Gradient}
  	
@@ -119,22 +171,23 @@ L'optimisation de $\gamma$ nous permettra de trouver la  famille $(w_1,.....,w_{
 	\caption{La Descente de Gradient}
 	\begin{algorithmic}
 	\REQUIRE $x_{0} \in \mathbb{R}^{n+1}$ vecteur poids qu'on choisit initialement \\ 
-	$c$ nombre d'étape maximum qu'on autorise  \\ 
+	$c$ nombre d'étape maximum qu'on autorise  \\ % le mettre aux plurielles? 
 	$\varepsilon \ge 0$ seuil qu'on choisit dont le gradient ne doit pas franchir \\ 
 	$k=0$
 	\WHILE{$\mid \mid \nabla f(x_{k}) \mid \mid  \ge \varepsilon$ and $k \neq c  $}
-		\STATE Simulation de calcul de $\nabla f(x_{k})$ \;
-		\STATE calcule $\alpha_{k} > 0 $ \;
+		\STATE Calcul de $\nabla f(x_{k})$ \; % calcule avec un e ou sans e 
+		\STATE Calcul de $\alpha_{k} > 0 $ \;
 		\STATE $ x_{k+1} = x_{k} - \alpha_{k} \nabla f(x_{k}) $ \;
 		\STATE k++; 
 	\ENDWHILE
 	\end{algorithmic}
 	\end{algorithm} 
-\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosie avec précaution. En effet, si celui-ci est trops grands, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
+% appel ou appelle
+\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosie avec précaution. En effet, si celui-ci est trops grand, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
 \newline
 On calcul le pas d'apprentissage à l'aide de l'algorithme suivant: 
 	\begin{algorithm}
-	\caption{Calcule du pas d'apprentissage}
+	\caption{Calcul du pas d'apprentissage}
 	\begin{algorithmic}
 	\REQUIRE $x_{0}$ vecteur poids qu'on choisit initialement \\ 
 	$k=0$
@@ -148,19 +201,47 @@ On calcul le pas d'apprentissage à l'aide de l'algorithme suivant:
 	\item $\alpha_{k}$ sera bien-sûr la valeur pour laquelle on aura $h'(\alpha_{k}) = 0$.
 	\item Dans les deux algorithmes précèdent le vecteur $x_{0}$ est choisie aléatoirement. 
 	\end{enumerate}
+
+%************************************************** début de l'exemple *****************************************************************
+
+\subsection{Exemple}
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (4,4);
+	\draw (0,0) rectangle (4,4);
+	\filldraw (1,3) circle (2pt);
+	\filldraw (2,3) circle (2pt);
+	\filldraw (1,2) circle (2pt);
+	\filldraw (0.4,1.3) circle (2pt);
+	\filldraw (1.8,3.5) circle (2pt);
+	\draw (0,0) -- (4,4);
+	\filldraw (2,1) [fill=red] circle (2pt);
+	\filldraw (3,1) [fill=red] circle (2pt);
+	\filldraw (3.5,2.5) [fill=red] circle (2pt);
+	\filldraw (3.6,1.2) [fill=red] circle (2pt);
+	\filldraw (0.8,0.5) [fill=red] circle (2pt);
+	\draw (2,-1) node { \textbf{figure n - exemple} };
+\end{tikzpicture}
+\end{center}
+\vfill
+
+%************************************************** fin de l'exemple *****************************************************************
+
+%faire l'exemple avec le neuronne et la droite de point, et faire une transition avec la retropropagation
 \subsection{Rétropropagation}
 Nous avons vu dans la partie précédente, comment nous pouvons minimiser la fonction $\gamma$ à condition d'avoir son gradient. Cette étape
-devient très vite fastidieuse lorsque le réseau de neuronne est formé de plusieurs couches de plusieurs neuronnes, car la fonction qui
-définira ce réseau sera la composée de toutes les fonctions définissant les neuronnes contenu dans celui-ci. Ce problème va être résolue 
+devient très vite fastidieuse lorsque le réseau de neurone est formé de plusieurs couches de plusieurs neurones, car la fonction qui
+définira ce réseau sera la composée de toutes les fonctions définissant les neurones contenu dans celui-ci. Ce problème va être résolue 
 grâce à la rétropropagation qui est une méthode qui va nous permettre de calculer le gradient de n'importe quelle réseau.
 
 \subsection {B-Diagramme}
 Pour parler de la rétropropagation  nous nous devons d'introduire une nouvelle structure qui est le B-Diagramme (Backpropagation diagramme).
-Ce diagramme représente les neuronnes utilisés dans notre réseau mais dans lesquelle nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
+Ce diagramme représente les neurones utilisés dans notre réseau mais dans lesquelle nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
 \newline 
 La rétropropagation ce divise en deux étapes :
 \begin{enumerate}
-\item L'étape de feed-forward : Cette étape consite à parcourir notre réseau de gauche à droite afin de calculer pour chaque neuronne, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le procéssus sera réitéré.
+\item L'étape de feed-forward : Cette étape consite à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le procéssus sera réitéré. % la régle avec leur et leurs
 \item L'étape de rétropropagation : Dans cette étape le réseau sera parcourus de droite à gauche et la valeur stockée à gauche sera 
 utilisée. Cette étape est divisée en plusieurs cas :
 \begin{enumerate}
@@ -168,7 +249,6 @@ utilisée. Cette étape est divisée en plusieurs cas :
 \item L'addition : 
 \item Les entrées avec poids : 
 \end{enumerate}
-\end{enumerate} 
-	
-	
+\end{enumerate}
+
 \end{document}
