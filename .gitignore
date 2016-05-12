@@ -1,3 +1,8 @@
 *
+!*.md
 !*.lua
+!*.tex
+*~
+.*
+#*
 !.gitignore
