@@ -30,9 +30,9 @@ local cl = 1
 local v = 0
 
 while cl <= clauses do
-   
+
    v = tonumber(list())
-   
+
    if v < -variables or v > variables
    then
       print(string.format("Incoherent values. %d [%d]", v, variables))
@@ -87,11 +87,14 @@ print("")
 -- showing progression
 score = 0
 count = 0
-function percentage(i)   
-   score = score * count + (i+1)/2
-   count = count + 1
-   p = math.floor(100 * score / count)
-   io.write("\r\r\r\r" .. p .. "% ")
+function percentage(i)
+   if i == 0 then
+      local p = math.floor(100 * score / count)
+      io.write("\r\r\r\r" .. p .. "% ")
+   else
+      score = score * count + (i+1)/2
+      count = count + 1
+   end
 end
 
 -- Running an evaluation session
@@ -134,7 +137,7 @@ function result(s)
 	       then
 		  percentage(-1)
 		  return s, v, -1
-	       end	    
+	       end
 	    end
 	 end
       end
@@ -177,9 +180,9 @@ print(build(result(session())))
 criterion = nn.MSECriterion()
 
 function train(model, input, target)
-   
+
    local x, dl_dx = model:getParameters()
-   
+
    local function eval(_x)
       if _x ~= x then
 	 x:copy(_x)
@@ -216,6 +219,7 @@ print("Running:")
 -- running the algorithm
 while true do
    us, uv, es, ev = build(result(session()))
+   percentage(0)
    train(uni, us, uv)
-   train(exi, es, ev)   
+   train(exi, es, ev)
 end
