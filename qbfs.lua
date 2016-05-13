@@ -191,8 +191,8 @@ function train(model, input, target)
       dl_dx:zero()
 
       local loss =
-	 criterion:forward(model:forward(input[sample]), target[sample])
-      model:backward(inputs, criterion:backward(model.output, target[sample]))
+	 criterion:forward(model:forward(input[sample]), {target[sample]})
+      model:backward(inputs, criterion:backward(model.output, {target[sample]}))
 
       return loss, dl_dx
    end
