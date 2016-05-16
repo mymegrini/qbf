@@ -114,11 +114,11 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 \begin{tikzpicture}[]
 	%\draw[help lines, thick] (0,0) grid (9,5);
 	\draw[->] (0.7,2.5) node [below] {$x_{2}$}-- node [below] {$w_{2}$} (2.5,2.5);
-	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left\{0,1\right\}$} (7.8,2.5)-- (8,2.5);
+	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left[0,1\right]$} (7.8,2.5)-- (8,2.5);
 	\draw[->] (0.7,3.5) node [below] {$x_{1}$} -- node [below] {$w_{1}$} (2.6,3);
 	\draw[->] (0.7,1.5) node [below] {$x_{n}$}-- node [below] {$w_{n}$} (2.6,2);
-	\draw (4.5,2.5) node {$ \begin{cases} 0 &\mbox{Si } \sum_{i=1}^{n} {x_iw_i} < \theta \\ 1 & \mbox{Si } \sum_{i=1}^{n} {x_iw_i} \geq \theta \end{cases} $} circle [x radius= 2, y radius=1.1];
-	\draw (4.5,0) node { \textbf{figure 3 - Perceptron} };
+	\draw (4.5,2.5) node {$ \frac{1}{1+e^{-x}}  $} circle [x radius= 2, y radius=1.1];
+	\draw (4.5,0) node { \textbf{figure 3 - Sigmoid} };
 \end{tikzpicture}
 \end{center}
 \vfill
@@ -166,7 +166,7 @@ L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n
 \subsection{Algorithme du Gradient}
  	
 	Cette algorithme va permettre de générer une suite  $x_{1},....,x_{k} \in \mathbb{R}^{n+1}$ jusqu'à que la condition d'arrêt soit satisfaite. On note $x_{1},....,x_{k}$ les différents vecteurs poids que l'algorithme calculera.
-
+\newpage
 	\begin{algorithm}
 	\caption{La Descente de Gradient}
 	\begin{algorithmic}
@@ -184,7 +184,6 @@ L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n
 	\end{algorithm} 
 % appel ou appelle
 \textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosie avec précaution. En effet, si celui-ci est trops grand, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
-\newline
 On calcul le pas d'apprentissage à l'aide de l'algorithme suivant: 
 	\begin{algorithm}
 	\caption{Calcul du pas d'apprentissage}
@@ -195,7 +194,6 @@ On calcul le pas d'apprentissage à l'aide de l'algorithme suivant:
 	\STATE Choisir $\alpha_{k}$ afin de minimiser la fonction $h(\alpha) = f(x_{k}-\alpha \nabla f(x_{k}))$;
 	\end{algorithmic}
 	\end{algorithm} 
-\newline 
 
 \textbf{Remarque } :\begin{enumerate} 
 	\item $\alpha_{k}$ sera bien-sûr la valeur pour laquelle on aura $h'(\alpha_{k}) = 0$.
@@ -205,6 +203,9 @@ On calcul le pas d'apprentissage à l'aide de l'algorithme suivant:
 %************************************************** début de l'exemple *****************************************************************
 
 \subsection{Exemple}
+
+Le but de cet exemple est de montrer comment un réseau de neurone $N$ peut apprendre la position des points d'un plan par rapport à une droite $d$.
+
 \vfill
 \begin{center}
 \begin{tikzpicture}[]
@@ -221,12 +222,41 @@ On calcul le pas d'apprentissage à l'aide de l'algorithme suivant:
 	\filldraw (3.5,2.5) [fill=red] circle (2pt);
 	\filldraw (3.6,1.2) [fill=red] circle (2pt);
 	\filldraw (0.8,0.5) [fill=red] circle (2pt);
-	\draw (2,-1) node { \textbf{figure n - exemple} };
+	\draw (2,-1) node { \textbf{figure 4 - exemple1} };
 \end{tikzpicture}
 \end{center}
 \vfill
 
+
+Pour cela nous allons introduire un réseau de neurone composé d'une unité de type Sigmoid.
+Ce neurone aura pour entrées les coordonnées du point choisit et pour sortie la valeur de la fonction d'activation qui est définit comme suit: 
+\[ \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}. \]
+
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left[0,1\right]$} (7.8,2.5)-- (8,2.5);
+	\draw[->] (0.7,3.5) node [below] {$u$} -- node [below] {$w_{1}$} (2.6,3);
+	\draw[->] (0.7,1.5) node [below] {$v$}-- node [below] {$w_{n}$} (2.6,2);
+	\draw (4.5,2.5) node {$ \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}  $} circle [x radius= 2, y radius=1.1];
+	\draw (4.5,0) node { \textbf{figure 5 - exemple2} };
+\end{tikzpicture}
+\end{center}
+\vfill
+
+Nous défnissons la fonction $\Phi_{x}(w_{1},w_{2},\theta)= \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}$ avec $x=(u,v)$.
+Soit $E$ un ensemble de triplet dont chaque triplet est définit de la manière suivante : 
+$x = (u,v,p)$ 	avec $u$ et $v$ l'abcisse et l'ordonnée du point $x$ et $p$ sa position par rapport à la droite $d$.
+
+	\[ \begin{cases} 0 &\mbox{Si  p est en dessous de d } \\
+				 0.5 & \mbox{Si p est sur d } \\
+				 1 & \mbox{Si p est au dessus de d }
+	 		 \end{cases} \] \\
+Soit $ C_x(w_{1},w_{2},\theta) = \frac{1}{2}(y(x)-\Phi_x(w_{1},w_{2},\theta))^{2} $ la fonction d'erreur de $N$ avec $y(x)=p$.
+Il suffit maintemant de calculer le gradient de la fonction $\gamma$ afin d'appliquer l'Algorithme du Gradient pour que le réseau $N$ nous donne des valeurs prochent de la réalitée.\\
 %************************************************** fin de l'exemple *****************************************************************
+\newline
 
 %faire l'exemple avec le neuronne et la droite de point, et faire une transition avec la retropropagation
 \subsection{Rétropropagation}
