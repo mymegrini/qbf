@@ -179,6 +179,7 @@ print(build(result(session())))
 
 criterion = nn.MSECriterion()
 
+-- Training models
 function train(model, input, target)
 
    local x, dl_dx = model:getParameters()
