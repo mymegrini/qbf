@@ -89,10 +89,9 @@ score = 0
 count = 0
 function percentage(i)
    if i == 0 then
-      local p = math.floor(100 * score / count)
-      io.write("\r\r\r\r" .. p .. "% ")
+      io.write(string.format("\r\r\r\r\r%d%% ", math.floor(100*score/count)))
    else
-      score = score * count + (i+1)/2
+      score = score + (i+1)/2
       count = count + 1
    end
 end
@@ -174,14 +173,11 @@ function build(s, v, r)
    end
    return uni_set, uni_val, exi_set, exi_val
 end
-print("Training set example:")
-print(build(result(session())))
-
-criterion = nn.MSECriterion()
 
 -- Training models
 function train(model, input, target)
 
+   local criterion = nn.MSECriterion()
    local x, dl_dx = model:getParameters()
 
    local function eval(_x)
@@ -195,8 +191,10 @@ function train(model, input, target)
       dl_dx:zero()
 
       local loss =
-	 criterion:forward(model:forward(input[sample]), {target[sample]})
-      model:backward(inputs, criterion:backward(model.output, {target[sample]}))
+	 criterion:forward(model:forward(input[sample]), target[{{sample}}])
+
+      model:backward(input[sample],
+		     criterion:backward(model.output, target[{{sample}}]))
 
       return loss, dl_dx
    end
@@ -218,9 +216,12 @@ end
 print("Running:")
 
 -- running the algorithm
-while true do
+n = 1000
+while n>0 do
    us, uv, es, ev = build(result(session()))
-   percentage(0)
    train(uni, us, uv)
    train(exi, es, ev)
+   percentage(0)
+   n = n-1
 end
+print("")
