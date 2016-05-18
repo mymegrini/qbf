@@ -89,6 +89,7 @@ score = 0
 count = 0
 function percentage(i)
    if i == 0 then
+      --print(string.format("%d%%", math.floor(100*score/count)))
       io.write(string.format("\r\r\r\r\r%d%% ", math.floor(100*score/count)))
    else
       score = score + (i+1)/2
@@ -146,6 +147,7 @@ end
 
 -- Building training data sets
 function build(s, v, r)
+   print(s, v, r)
    local lambda = .5
    local u = math.floor((variables + 1)/2)
    local e = math.floor(variables/2)
@@ -154,21 +156,28 @@ function build(s, v, r)
    local uni_val = torch.Tensor(u)
    local exi_val = torch.Tensor(e)
 
-   for i=1,variables do
-      local w = lambda ^ math.max(i-v,0)
+   local function pull(value, target, factor, i)
+      print(value, target, factor, i)
+      if (i>v) then return value
+      else return value * (1-factor) + target * factor
+      end
+   end
+
+   for i=1,v do
+      local f = lambda ^ math.max(v-i,0)
       if i % 2 == 0
       then
 	 for j=i/2,e-1 do
 	    exi_set[j+1][i] = s[1][i]
 	    if j<u then uni_set[j+1][i] = s[1][i] end
 	 end
-	 exi_val[i/2] = r * w + s[2][i] * (1 - w) -- pulling towards win
+	 exi_val[i/2] = pull(s[2][i], s[1][i], f, i) -- incentivizing
       else
 	 for j=(i-1)/2+1,u do
 	    if j<u then uni_set[j+1][i] = s[1][i] end
 	    exi_set[j][i] = s[1][i]
 	 end
-	 uni_val[(i-1)/2+1] = -r * w + s[2][i] * (1 - w) -- pulling towards loss
+	 uni_val[(i-1)/2+1] = pull(s[2][i], -s[1][i], f, i) -- disincentivizing
       end
    end
    return uni_set, uni_val, exi_set, exi_val
@@ -200,15 +209,15 @@ function train(model, input, target)
    end
 
    sgd_params = {
-      learningRate = .01,
-      learningRateDecay = .001,
+      learningRate = .1,
+      learningRateDecay = .0001,
       weightDecay = 0,
       momentum = 0
    }
 
-   for i = 1,100 do
+   for i = 1,100*variables do
       for i =1,(#target)[1] do
-	 optim.sgd(eval, x, sgd_params)
+	 _,fs = optim.sgd(eval, x, sgd_params)
       end
    end
 end
@@ -216,7 +225,7 @@ end
 print("Running:")
 
 -- running the algorithm
-n = 1000
+n = 1
 while n>0 do
    us, uv, es, ev = build(result(session()))
    train(uni, us, uv)
