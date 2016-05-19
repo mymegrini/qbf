@@ -64,8 +64,10 @@ while cl <= clauses do
       formula[cl][variables + 1] = formula[cl][variables + 1] + 1
    end
 end
+print("Quantifier:")
+print(quantifier)
 print("Formula:")
-print(quantifier, formula)
+print(formula)
 
 -- Creating a neural network
 function init(size)
@@ -184,8 +186,10 @@ function build(s, v, r)
    --print(s, v, r)
    
    local lambda = .5
+   -- learning inputs
    local uni_set = torch.Tensor(u, variables):zero()
    local exi_set = torch.Tensor(e, variables):zero()
+   -- learning targets
    local uni_val = torch.Tensor(u)
    local exi_val = torch.Tensor(e)
    local uni_size = 0
@@ -195,61 +199,63 @@ function build(s, v, r)
       return factor * value + (1 - factor) * (target + 1) / 2
    end
 
+   local e_i = 0
+   local u_i = 0
+   
    for i=1,v do
       local f = lambda ^ math.max(v-i,0)
       if quantifier[i] == 1
       then
-	 for j=i/2,e-1 do
-	    exi_set[j+1][i] = s[1][i]
-	    if j<u then uni_set[j+1][i] = s[1][i] end
-	 end
-	 exi_val[i/2] = shift(s[2][i], -r * s[1][i], f) -- learning
+	 e_i = e_i + 1
+	 for k=1,i do exi_set[e_i][k] = s[1][k] end
+	 exi_val[e_i] = shift(s[2][i], r * s[1][i], f)
       else
-	 for j=(i-1)/2+1,u do
-	    if j<u then uni_set[j+1][i] = s[1][i] end
-	    exi_set[j][i] = s[1][i]
-	 end
-	 uni_val[(i-1)/2+1] = shift(s[2][i], r * s[1][i], f) -- learning
+	 u_i = u_i + 1
+	 for k=1,i do uni_set[u_i][k] = s[1][k] end
+	 uni_val[u_i] = shift(s[2][i], -r * s[1][i], f)
       end
    end
-   return uni_set, uni_val, exi_set, exi_val
+   return uni_set, uni_val, u_i, exi_set, exi_val, e_i
 end
 
 -- Training models
-function train(model, input, target)
+function train(model, input, target, size)
 
-   local criterion = nn.MSECriterion()
-   local x, dl_dx = model:getParameters()
-
-   local function eval(_x)
-      if _x ~= x then
-	 x:copy(_x)
+   if size>0
+   then
+      local criterion = nn.MSECriterion()
+      local x, dl_dx = model:getParameters()
+      
+      local function eval(_x)
+	 if _x ~= x then
+	    x:copy(_x)
+	 end
+	 
+	 local sample = (sample or 0) + 1
+	 if sample > size then sample = 1 end
+	 
+	 dl_dx:zero()
+	 
+	 local loss =
+	    criterion:forward(model:forward(input[sample]), target[{{sample}}])
+	 
+	 model:backward(input[sample],
+			criterion:backward(model.output, target[{{sample}}]))
+	 
+	 return loss, dl_dx
       end
-
-      local sample = (sample or 0) + 1
-      if sample > (#target)[1] then sample = 1 end
-
-      dl_dx:zero()
-
-      local loss =
-	 criterion:forward(model:forward(input[sample]), target[{{sample}}])
-
-      model:backward(input[sample],
-		     criterion:backward(model.output, target[{{sample}}]))
-
-      return loss, dl_dx
-   end
-
-   sgd_params = {
-      learningRate = .01,
-      learningRateDecay = .0001,
-      weightDecay = 0,
-      momentum = 0
-   }
-
-   for i = 1,1e3 do
-      for i =1,(#target)[1] do
-	 _,fs = optim.sgd(eval, x, sgd_params)
+      
+      sgd_params = {
+	 learningRate = .01,
+	 learningRateDecay = .0001,
+	 weightDecay = 0,
+	 momentum = 0
+      }
+      
+      for i = 1,1e3 do
+	 for i =1,(#target)[1] do
+	    _,fs = optim.sgd(eval, x, sgd_params)
+	 end
       end
    end
 end
@@ -257,18 +263,18 @@ end
 print("Running:")
 
 -- running the algorithm
-n = 1
+n = 100
 while n>0 do
    local s, r, v = result(session())
-   local us, uv, es, ev = build(result(session()))
-   train(uni, us, uv)
-   train(exi, es, ev)
-   if n % 1 == 0
+   local us, uv, ui, es, ev, ei = build(result(session()))
+   train(uni, us, uv, ui)
+   train(exi, es, ev, ei)
+   if n % 10 == 0
    then
       print("Session " .. n ..":")
       print(s, r, v)
       print("Training set: ")
-      print(us, uv, es, ev)
+      print(us, es, uv, ev, ui, ei)
       percentage(-1)
       print("")
    end
