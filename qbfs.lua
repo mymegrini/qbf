@@ -208,11 +208,11 @@ function build(s, v, r)
       then
 	 e_i = e_i + 1
 	 for k=1,i do exi_set[e_i][k] = s[1][k] end
-	 exi_val[e_i] = shift(s[2][i], -r * s[1][i], f)
+	 exi_val[e_i] = shift(s[2][i], r, f)
       else
 	 u_i = u_i + 1
 	 for k=1,i do uni_set[u_i][k] = s[1][k] end
-	 uni_val[u_i] = shift(s[2][i], r * s[1][i], f)
+	 uni_val[u_i] = shift(s[2][i], -r, f)
       end
    end
    return uni_set, uni_val, u_i, exi_set, exi_val, e_i
@@ -252,7 +252,7 @@ function train(model, input, target, size)
 	 momentum = 0
       }
 
-      for i = 1,1e4 do
+      for i = 1,1e3 do
 	 for i =1,(#target)[1] do
 	    _,fs = optim.sgd(eval, x, sgd_params)
 	 end
@@ -263,8 +263,8 @@ end
 print("Running:")
 
 -- running the algorithm
-n = 100
-game = 1
+n = 100 -- total number of sessions
+game = 1 -- current number of game sessions
 while n>0 do
    local s, v, r = result(session())
    local us, uv, ui, es, ev, ei = build(result(session()))
