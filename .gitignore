@@ -4,6 +4,7 @@
 !*.lua
 !*.tex
 !*.output
+!*.sh
 *~
 .*
 #*
