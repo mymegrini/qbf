@@ -91,7 +91,7 @@ print(uni)
 
 
 -- Making random choice
---[[ 
+--[[
 function play(output)
    local v = 2 * torch.uniform() -1 + output
    if v < 0
@@ -109,8 +109,8 @@ score = 0
 count = 0
 function percentage(i)
    if i == -1 then
-      --print(string.format("%d%%", math.floor(100*score/count)))
-      io.write(string.format("\r\r\r\r\r%d%% ", math.floor(100*score/count)))
+      print(string.format("%d%%", math.floor(100*score/count)))
+      --io.write(string.format("\r\r\r\r\r%d%% ", math.floor(100*score/count)))
    else
       score = score + i
       count = count + 1
@@ -132,7 +132,7 @@ function play(model, s, i)
       s[2][i] = vf
    end
 end
-   
+
 -- Running an evaluation session
 function session()
    local s = torch.Tensor(2, variables):fill(0)
@@ -182,9 +182,9 @@ end
 
 -- Building training data sets
 function build(s, v, r)
-   
+
    --print(s, v, r)
-   
+
    local lambda = .5
    -- learning inputs
    local uni_set = torch.Tensor(u, variables):zero()
@@ -201,18 +201,18 @@ function build(s, v, r)
 
    local e_i = 0
    local u_i = 0
-   
+
    for i=1,v do
       local f = lambda ^ math.max(v-i,0)
       if quantifier[i] == 1
       then
 	 e_i = e_i + 1
 	 for k=1,i do exi_set[e_i][k] = s[1][k] end
-	 exi_val[e_i] = shift(s[2][i], r * s[1][i], f)
+	 exi_val[e_i] = shift(s[2][i], -r * s[1][i], f)
       else
 	 u_i = u_i + 1
 	 for k=1,i do uni_set[u_i][k] = s[1][k] end
-	 uni_val[u_i] = shift(s[2][i], -r * s[1][i], f)
+	 uni_val[u_i] = shift(s[2][i], r * s[1][i], f)
       end
    end
    return uni_set, uni_val, u_i, exi_set, exi_val, e_i
@@ -225,33 +225,33 @@ function train(model, input, target, size)
    then
       local criterion = nn.MSECriterion()
       local x, dl_dx = model:getParameters()
-      
+
       local function eval(_x)
 	 if _x ~= x then
 	    x:copy(_x)
 	 end
-	 
+
 	 local sample = (sample or 0) + 1
 	 if sample > size then sample = 1 end
-	 
+
 	 dl_dx:zero()
-	 
+
 	 local loss =
 	    criterion:forward(model:forward(input[sample]), target[{{sample}}])
-	 
+
 	 model:backward(input[sample],
 			criterion:backward(model.output, target[{{sample}}]))
-	 
+
 	 return loss, dl_dx
       end
-      
+
       sgd_params = {
 	 learningRate = .01,
 	 learningRateDecay = .0001,
 	 weightDecay = 0,
 	 momentum = 0
       }
-      
+
       for i = 1,1e4 do
 	 for i =1,(#target)[1] do
 	    _,fs = optim.sgd(eval, x, sgd_params)
@@ -275,13 +275,17 @@ while n>0 do
       print("Session " .. game ..":")
       print(s)
       print("Result: " .. r .. " (var " .. v .. ")")
+
       print("Training set: ")
       print("uni:")
       print(us, uv, ui)
+
       print("exi:")
       print(es, ev, ei)
+
+      print("\nPercentage:")
       percentage(-1)
-      print("")
+      print("------------------------------------------------------\n")
    end
    game = game + 1
    n = n-1
