@@ -5,5 +5,6 @@ cd ~/torch;
 bash install-deps;
 ./install.sh;
 source ~/.bashrc;
+source ~/.profile;
 luarocks install nn;
 luarocks install optim;
