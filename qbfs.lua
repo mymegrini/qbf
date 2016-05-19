@@ -190,13 +190,13 @@ function build(s, v, r)
    local uni_set = torch.Tensor(u, variables):zero()
    local exi_set = torch.Tensor(e, variables):zero()
    -- learning targets
-   local uni_val = torch.Tensor(u)
-   local exi_val = torch.Tensor(e)
+   local uni_val = torch.Tensor(u):zero()
+   local exi_val = torch.Tensor(e):zero()
    local uni_size = 0
    local exi_size = 0
 
    local function shift(value, target, factor)
-      return factor * value + (1 - factor) * (target + 1) / 2
+      return (1 - factor) * value + factor * (target + 1) / 2
    end
 
    local e_i = 0
@@ -252,7 +252,7 @@ function train(model, input, target, size)
 	 momentum = 0
       }
       
-      for i = 1,1e3 do
+      for i = 1,1e4 do
 	 for i =1,(#target)[1] do
 	    _,fs = optim.sgd(eval, x, sgd_params)
 	 end
@@ -264,19 +264,25 @@ print("Running:")
 
 -- running the algorithm
 n = 100
+game = 1
 while n>0 do
-   local s, r, v = result(session())
+   local s, v, r = result(session())
    local us, uv, ui, es, ev, ei = build(result(session()))
    train(uni, us, uv, ui)
    train(exi, es, ev, ei)
    if n % 10 == 0
    then
-      print("Session " .. n ..":")
-      print(s, r, v)
+      print("Session " .. game ..":")
+      print(s)
+      print("Result: " .. r .. " (var " .. v .. ")")
       print("Training set: ")
-      print(us, es, uv, ev, ui, ei)
+      print("uni:")
+      print(us, uv, ui)
+      print("exi:")
+      print(es, ev, ei)
       percentage(-1)
       print("")
    end
+   game = game + 1
    n = n-1
 end
