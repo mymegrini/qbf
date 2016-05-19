@@ -222,7 +222,7 @@ Le but de cet exemple est de montrer comment un réseau de neurone $N$ peut appr
 	\filldraw (3.5,2.5) [fill=red] circle (2pt);
 	\filldraw (3.6,1.2) [fill=red] circle (2pt);
 	\filldraw (0.8,0.5) [fill=red] circle (2pt);
-	\draw (2,-1) node { \textbf{figure 4 - exemple1} };
+	\draw (2,-1) node { \textbf{figure 4 - exemple 1} };
 \end{tikzpicture}
 \end{center}
 \vfill
@@ -240,7 +240,7 @@ Ce neurone aura pour entrées les coordonnées du point choisit et pour sortie l
 	\draw[->] (0.7,3.5) node [below] {$u$} -- node [below] {$w_{1}$} (2.6,3);
 	\draw[->] (0.7,1.5) node [below] {$v$}-- node [below] {$w_{n}$} (2.6,2);
 	\draw (4.5,2.5) node {$ \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}  $} circle [x radius= 2, y radius=1.1];
-	\draw (4.5,0) node { \textbf{figure 5 - exemple2} };
+	\draw (4.5,0) node { \textbf{figure 5 - exemple 2} };
 \end{tikzpicture}
 \end{center}
 \vfill
@@ -268,17 +268,104 @@ grâce à la rétropropagation qui est une méthode qui va nous permettre de cal
 \subsection {B-Diagramme}
 Pour parler de la rétropropagation  nous nous devons d'introduire une nouvelle structure qui est le B-Diagramme (Backpropagation diagramme).
 Ce diagramme représente les neurones utilisés dans notre réseau mais dans lesquelle nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
-\newline 
+\newline
+% préciser les dérivéees partielle dans le diagramme
+%************************************************** début de la figure *****************************************************************
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\draw[->] (0.7,2.5) node [below] {$x$}-- (2.5,2.5);
+	\draw[->] (6.5,2.5)-- node[below, align=center] {$f(x)$} (7.8,2.5)--(8,2.5);
+	\draw (4.5,1.4)--(4.5,3.6);	
+	\draw (4.5,2.5) circle [x radius= 2, y radius=1.1];
+	\draw (3.5,2.5) node { $f'$ };
+	\draw (5.5,2.5) node { $f$ };
+	\draw (4.5,0) node { \textbf{figure 6 - B-Diagramme} };
+\end{tikzpicture}
+\end{center}
+\vfill
+%************************************************** fin de la figure *****************************************************************
+ 
 La rétropropagation ce divise en deux étapes :
 \begin{enumerate}
 \item L'étape de feed-forward : Cette étape consite à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le procéssus sera réitéré. % la régle avec leur et leurs
 \item L'étape de rétropropagation : Dans cette étape le réseau sera parcourus de droite à gauche et la valeur stockée à gauche sera 
 utilisée. Cette étape est divisée en plusieurs cas :
 \begin{enumerate}
-\item La composition  :
-\item L'addition : 
-\item Les entrées avec poids : 
-\end{enumerate}
-\end{enumerate}
+\item La composition  : Le réseau prend en entrée la constante 1. Celle-ci est multipliée par la valeur stockées dans la partie gauche du neurone. Le résultat sera ensuite transmis à l'unité suivante dans laquelle la constante sera multipliée par sa valeur de gauche. Le résultat final sera égale à $f'(g(x)).g'(x)$.
+%************************************************** début de la figure *****************************************************************
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (-1,0) grid (9,5);
+	\draw[<-] (-1,2.5) node [below] {$f'(g(x))g'(x)$} -- (0.5,2.5);
+	\draw[<-] (7.5,2.5)-- node [below] {$1$}(8.5,2.5);
+	\draw[<-] (3.5,2.5) --(4.5,2.5);
+	\draw (4,2) node [below] {$f'(g(x))$};
+	\draw (2,3.5)--(2,1.5);
+	\draw (6,3.5)--(6,1.5);
+	\draw (2,2.5) circle [x radius= 1.5, y radius=1];
+	\draw (6,2.5) circle [x radius= 1.5, y radius=1];
+	\draw (1.5,2.5) node {$g'(x)$};
+	\draw (2.5,2.5) node {$g(x)$};
+	\draw (5.3,2.5) node {$f'(g(x))$};
+	\draw (6.6,2.5) node {$f(g(x))$};
+	\draw (4.5,0) node { \textbf{figure 7 - B-Diagramme} };
+\end{tikzpicture}
+\end{center}
+\vfill
+%************************************************** fin de la figure *****************************************************************
+\item L'addition : Le réseau prend en entrée la constante 1, qui sera ensuite distribuée dans chaque unité. Lorsque deux unités se rencontre on additionne le résultat 
+%************************************************** début de la figure *****************************************************************
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\draw [<-] (5,1.5)--(6.5,2.5);
+	\draw [<-] (5,3.5)--(6.5,2.5);
+	\draw [->] (3,1.5)--(1,2.5);
+	\draw [->] (3,3.5)--(1,2.5);
+	\draw  (4,1)--(4,2);
+	\draw  (4,3)--(4,4);
+	\draw  (7.5,3)--(7.5,2);
+	\draw (-1,2.5) node {$f_{1}(x)+f_2(x)$};
+	\draw (3.5,1.5) node {$f'_{1}(x)$};
+	\draw (3.5,3.5) node {$f'_2(x)$};
+	\draw (4.5,1.5) node {$f_{1}(x)$};
+	\draw (4.5,3.5) node {$f_2(x)$};
+	\draw (8,2.5) node {$+$};
+	\draw (7,2.5) node {$1$};
+	\draw (4,1.5) circle [x radius= 1, y radius=0.5];
+	\draw (4,3.5) circle [x radius= 1, y radius=0.5];
+	\draw (7.5,2.5) circle [x radius= 1, y radius=0.5];
+	\draw (4.5,0) node { \textbf{figure 8 - B-Diagramme} };
+\end{tikzpicture}
+\end{center}
+\vfill
+%************************************************** fin de la figure *****************************************************************
+\item Les entrées avec poids :
+\vfill
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (9,5);
+	\filldraw (2,2)[fill=black] circle (3pt);
+	\draw (2,2)[left] node {$w$};
+	\filldraw (7,2) [fill=black] circle (3pt);
+	\draw (7,2)[right] node {$1$};
+	\draw (2,2)--(7,2);
+	\filldraw (2,4) [fill=black] circle (3pt);
+	\draw (2,4)[left] node {$x$};
+	\filldraw (7,4) [fill=black] circle (3pt);
+	\draw (7,4)[right] node {$wx$};
+	\draw (4.5,2) node [below] {Rétropropagation};
+	\draw (4.5,4) node [below] {Feed-Forward};
+	\draw (2,4)--(7,4);
+	\draw (4.5,0) node { \textbf{figure 9 - B-Diagramme} };
+\end{tikzpicture}
+\end{center}
+\vfill
 
+\end{enumerate}
+\end{enumerate}
 \end{document}
