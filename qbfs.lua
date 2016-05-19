@@ -118,18 +118,32 @@ function percentage(i)
 end
 
 -- Making a play
+explore = true  -- allows networks to choose random plays
 function play(model, s, i)
    s[1][i] = -1
    local vf = model(s[1])[1]
    s[1][i] = 1
    local vt = model(s[1])[1]
-   if vf < vt
-   then
-      s[1][i] = 1
-      s[2][i] = vt
-   else
-      s[1][i] = -1
-      s[2][i] = vf
+   if explore
+   then  -- random
+      local b = vf + vt
+      if (vf + vt) * torch.uniform() < vt
+      then
+	 s[1][i] = 1
+	 s[2][i] = vt
+      else
+	 s[1][i] = -1
+	 s[2][i] = vf
+      end
+   else  -- deterministic
+      if vf < vt
+      then
+	 s[1][i] = 1
+	 s[2][i] = vt
+      else
+	 s[1][i] = -1
+	 s[2][i] = vf
+      end
    end
 end
 
@@ -263,7 +277,7 @@ end
 print("Running:")
 
 -- running the algorithm
-n = 100 -- total number of sessions
+n = 1000 -- total number of sessions
 game = 1 -- current number of game sessions
 while n>0 do
    local s, v, r = result(session())
