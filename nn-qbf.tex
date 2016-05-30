@@ -131,25 +131,25 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neurone. Les entrées des neurones sont les sorties de ceux de la couche précèdente.
 		\item la couche de sortie : Cette couche nous donne le résultat du réseau. Elle peut être formée d'un ou plusieur neurone.
 	\end{enumerate}		
-
+% a faire un schéma pour le réseau de neurone 
 		
-	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neurone et comment etait-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problème. % accoder problème ??? 
+	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neurone et comment etait-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problèmes. 
 	
 	
 \section{L'Apprentissage}	
-L'une des particularités des réseaux de neurones est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction d'erreur. \\
+L'une des particularités des réseaux de neurones est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction de coût. \\
  
-	\subsection{Définition: Fonction d'erreur}
+	\subsection{Définition: Fonction de coût}
 		Soit $C_{x}$ une fonction telle que :	
 		  \[ \fonction{C_{x}}{\mathbb{R}^{n+1}}{\mathbb{R}}{(w_1,.....,w_{n+1})}{\frac{1}{2}(y(x)-\Phi_{x}(w_1,.....,w_{n+1}))^{2}}. \]
 
-		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neuronne et $x$ correspondant à une entrée chosit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction d'erreur. \\
+		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neuronne et $x$ correspondant à une entrée chosit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction de coût. \\
 
 
  \textbf{Remarque }: 
 	\begin{enumerate} %voulu avec un e ou sans e ?? 
-		\item On définit $E$ comme étant un ensemble d'entrée pour un réseau de neurone particulier dont le résultat voulu est connu. 
-		\item La fonction $C_{x}$ définit ne concerne seulement qu'une valeur de l'enssemble $E$. Afin que le réseau de neurone soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(w_1,.....,w_{n+1}) = \sum_{x \in E} C_{x}(w_1,.....,w_{n+1})$.
+		\item On définit $E$ comme étant un ensemble d'entrées pour un réseau de neurone particulier dont le résultat voulu est connu. 
+		\item La fonction $C_{x}$ définit ne concerne seulement qu'une valeur de l'ensemble $E$. Afin que le réseau de neurone soit le plus performant possible, nous optimiserons la fonction suivante $\gamma(w_1,.....,w_{n+1}) = \sum_{x \in E} C_{x}(w_1,.....,w_{n+1})$.
 		\item L'optimisation de la fonction $\gamma$ dépendra de l'ensemble $E$ que nous devrons fournir. 
 	\end{enumerate}
 
@@ -183,7 +183,7 @@ L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n
 	\end{algorithmic}
 	\end{algorithm} 
 % appel ou appelle
-\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosie avec précaution. En effet, si celui-ci est trops grand, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
+\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosi avec précaution. En effet, si celui-ci est trops grand, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
 On calcul le pas d'apprentissage à l'aide de l'algorithme suivant: 
 	\begin{algorithm}
 	\caption{Calcul du pas d'apprentissage}
@@ -197,7 +197,7 @@ On calcul le pas d'apprentissage à l'aide de l'algorithme suivant:
 
 \textbf{Remarque } :\begin{enumerate} 
 	\item $\alpha_{k}$ sera bien-sûr la valeur pour laquelle on aura $h'(\alpha_{k}) = 0$.
-	\item Dans les deux algorithmes précèdent le vecteur $x_{0}$ est choisie aléatoirement. 
+	\item Dans les deux algorithmes précèdent le vecteur $x_{0}$ est choisi aléatoirement. 
 	\end{enumerate}
 
 %************************************************** début de l'exemple *****************************************************************
@@ -245,16 +245,16 @@ Ce neurone aura pour entrées les coordonnées du point choisit et pour sortie l
 \end{center}
 \vfill
 
-Nous défnissons la fonction $\Phi_{x}(w_{1},w_{2},\theta)= \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}$ avec $x=(u,v)$.
+Nous définissons la fonction $\Phi_{x}(w_{1},w_{2},\theta)= \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}$ avec $x=(u,v)$.
 Soit $E$ un ensemble de triplet dont chaque triplet est définit de la manière suivante : 
-$x = (u,v,p)$ 	avec $u$ et $v$ l'abcisse et l'ordonnée du point $x$ et $p$ sa position par rapport à la droite $d$.
+$x = (u,v,p)$ 	avec $u$ et $v$ l'abscisse et l'ordonnée du point $x$ et $p$ sa position par rapport à la droite $d$.
 
 	\[ \begin{cases} 0 &\mbox{Si  p est en dessous de d } \\
 				 0.5 & \mbox{Si p est sur d } \\
 				 1 & \mbox{Si p est au dessus de d }
 	 		 \end{cases} \] \\
-Soit $ C_x(w_{1},w_{2},\theta) = \frac{1}{2}(y(x)-\Phi_x(w_{1},w_{2},\theta))^{2} $ la fonction d'erreur de $N$ avec $y(x)=p$.
-Il suffit maintemant de calculer le gradient de la fonction $\gamma$ afin d'appliquer l'Algorithme du Gradient pour que le réseau $N$ nous donne des valeurs prochent de la réalitée.\\
+Soit $ C_x(w_{1},w_{2},\theta) = \frac{1}{2}(y(x)-\Phi_x(w_{1},w_{2},\theta))^{2} $ la fonction de coût de $N$ avec $y(x)=p$.
+Il suffit maintemant de calculer le gradient de la fonction $\gamma$ afin d'appliquer l'Algorithme du Gradient pour que le réseau $N$ nous donne des valeurs prochent de la réalité.\\
 %************************************************** fin de l'exemple *****************************************************************
 \newline
 
@@ -289,11 +289,11 @@ Ce diagramme représente les neurones utilisés dans notre réseau mais dans les
  
 La rétropropagation ce divise en deux étapes :
 \begin{enumerate}
-\item L'étape de feed-forward : Cette étape consite à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le procéssus sera réitéré. % la régle avec leur et leurs
-\item L'étape de rétropropagation : Dans cette étape le réseau sera parcourus de droite à gauche et la valeur stockée à gauche sera 
+\item L'étape de feed-forward : Cette étape consiste à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le processus sera réitéré. % la régle avec leur et leurs
+\item L'étape de rétropropagation : Dans cette étape le réseau sera parcouru de droite à gauche et la valeur stockée à gauche sera 
 utilisée. Cette étape est divisée en plusieurs cas :
 \begin{enumerate}
-\item La composition  : Le réseau prend en entrée la constante 1. Celle-ci est multipliée par la valeur stockées dans la partie gauche du neurone. Le résultat sera ensuite transmis à l'unité suivante dans laquelle la constante sera multipliée par sa valeur de gauche. Le résultat final sera égale à $f'(g(x)).g'(x)$.
+\item La composition  : Le réseau prend en entrée la constante 1. Celle-ci est multipliée par la valeur stockée dans la partie gauche du neurone. Le résultat sera ensuite transmis à l'unité suivante dans laquelle la constante sera multipliée par sa valeur de gauche. Le résultat final sera alors égale à $f'(g(x)).g'(x)$.
 %************************************************** début de la figure *****************************************************************
 \vfill
 \begin{center}
