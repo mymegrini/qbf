@@ -23,8 +23,10 @@
 }
 
 \begin{document}
-\section[Titre plus court]{Les Neurones}
+\section{Introduction}
+\newpage
 
+\section[Titre plus court]{Les Neurones}
 Le premier modèle mathématique et informatique du neurone biologique a été donné par Warren McCulloh et Walter Pitts en 1943.
 Ce modèle inspiré de la neurobiologique, fait intervenir n entrées auxquelles des fonctions y seront appliquées afin d'en obtenir une sortie.
 Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCulloh-Pitts     
@@ -143,7 +145,7 @@ L'une des particularités des réseaux de neurones est le fait de pouvoir appren
 		Soit $C_{x}$ une fonction telle que :	
 		  \[ \fonction{C_{x}}{\mathbb{R}^{n+1}}{\mathbb{R}}{(w_1,.....,w_{n+1})}{\frac{1}{2}(y(x)-\Phi_{x}(w_1,.....,w_{n+1}))^{2}}. \]
 
-		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neuronne et $x$ correspondant à une entrée chosit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction de coût. \\
+		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neurone et $x$ correspondant à une entrée chosit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction de coût. \\
 
 
  \textbf{Remarque }: 
@@ -365,7 +367,54 @@ utilisée. Cette étape est divisée en plusieurs cas :
 \end{tikzpicture}
 \end{center}
 \vfill
+\end{enumerate}
+\end{enumerate}
+\newpage
+\section{Réseau de neurone et résolution de formule booléenne quantifiée}
+Dans la partie précédente nous avons vu comment un réseau de neurone pouvait être entrainé et ainsi devenir plus performant. Dans cette partie, nous allons voir comment nous pouvons entrainer un réseau de neurone afin que celui-ci puisse résoudre des formules booléennes quantifées.
+Afin qu'un réseau de neurone puisse résoudre une formule booléenne quantifiée, il faut que celle-ci soit mise sous forme prénexe.
+\subsection{Définition : Forme prénexe}
+	On dit que une formule et sous forme prénexe si tout ses quantificateurs existentiels et universels sont placés au début de la formule. 
+	\[ G= Q_{1}x_{1}Q_{2}x_{2}....Q_{n}x_{2}G' \] avec $G'$ une formule booléenne sans quantificateur.
+\newline \\
+Afin de résoudre une formule quantifiée, on utilisera deux réseaux de neurone qui s'affronterons dans un jeu dont les règles sont les suivante : 
+	Un réseau se chargera de choisir les éléments pour les quantifiateurs existentiels  
+	L'autre réseau se chargera de choisir les éléments pour les quantifiateurs universels. Le but est qu'un des deux réseaux trouve une stratégie gagnante.
+	%% Développer le jeu 
 
-\end{enumerate}
-\end{enumerate}
-\end{document}
+Les deux réseaux de neurone que nous utilisons sont constitués de la même façon. Leur constitution est donnée par le schéma suivant.
+
+%% Exprime le réseau de neurone qu'on a 
+\begin{center}
+\begin{tikzpicture}[]
+	%\draw[help lines, thick] (0,0) grid (11,5);
+	\draw (2.5,2.5) node {L} circle [x radius=0.5, y radius=1.5];
+	\draw (4.5,2.5) node {S} circle [x radius=0.5, y radius=1.5];
+	\draw (6.5,2.5)node{L}circle[x radius=0.5, y radius=1.5];
+	\draw (8.5,2.5) node {S} circle [x radius=0.5, y radius=1.5];
+	\draw [->] (3,2.5)--(4,2.5);
+	\draw [->] (1,2.5)--(2,2.5);
+	\draw [->] (5,2.5)--(6,2.5);
+	\draw [->] (7,2.5)--(8,2.5);
+	\draw (0,4)--(1,4);
+	\draw (0,4)--(0,1); 
+	\draw (1,4)--(1,1); 
+	\draw (0,1)--(1,1);
+	\draw (4,4)--(4,4.2);
+	\draw (7,4)--(7,4.2);
+	\draw (4,4.2)--(7,4.2);
+	\draw (0.5,3.5) node{1};
+	\draw (0.5,3) node{-1};
+	\draw (0.5,2.5) node{\vdots};
+	\draw (0.5,2) node{0};
+	\draw (0.5,1.7) node{\vdots};
+	\draw (0.5,2) node{0};
+	\draw (0.5,1.2) node{0};
+	\draw [->] (9,2.5)--(10,2.5);
+	\draw (2.5,4.5) node {\textbf{Couche d'entrée}}; 
+	\draw (5.5,4.5) node {\textbf{Couche cachée}}; 
+	\draw (8.5,4.5) node {\textbf{Couche de sortie}}; 
+	\draw (5.5,0) node { \textbf{figure 10 - Constitution des réseaux de neurones }};
+\end{tikzpicture}
+\end{center}
+\end{document} 
