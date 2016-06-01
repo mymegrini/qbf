@@ -24,11 +24,13 @@
 
 \begin{document}
 \section{Introduction}
+L'apprentissage profond est une branche du machine learning. Dans cette branche, nous trouvons des algorithmes qu'on utilise principalement dans la reconnaissance d'image et vocal et qui est capable d'apprendre de manière autonome ou supervisé. Notre projet consiste à utiliser l'apprentissage profond dans le problème des formules quantifiées booléenne (dit QBF). Les formules booléennes quantifiées permettent de modéliser de nombreuses situations de la vie courante. Une des questions que nous pouvons nous poser est de savoir si celles-ci sont satisfaisable ou non. Cette question est un grand problème dans l'informatique théorique qu'on place dans la classe PSPACE-complet. Le fait d'utiliser l'apprentissage profond afin de savoir si une formule QBF est satisfaisable est très peu commun et reste une démarche expérimental. Dans ce rapport, nous allons premièrement parler des outils de base qu'on utilise dans l'apprentissage profond qui sont les neurones et réseaux de neurones. Nous allons ensuite voir la notions clef de ce domaine qui est l'apprentissage. Nous terminerons ce rapport en parlant de notre démarche expérimental qui
+sera un algorithme permettant de vérifier la satisfaisabilitée d'une formule QBF.  
 \newpage
 
 \section[Titre plus court]{Les Neurones}
 Le premier modèle mathématique et informatique du neurone biologique a été donné par Warren McCulloh et Walter Pitts en 1943.
-Ce modèle inspiré de la neurobiologique, fait intervenir n entrées auxquelles des fonctions y seront appliquées afin d'en obtenir une sortie.
+Ce modèle inspiré de la neurobiologie, fait intervenir n entrées auxquelles des fonctions y seront appliquées afin d'en obtenir une sortie.
 Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCulloh-Pitts     
 
 \subsection{Définition: Modèle de McCulloh-Pitts}
@@ -71,7 +73,7 @@ Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCull
 \textbf{Remarque} : La valeur $\theta$  qu'on utilise dans la fonction $g$ est appelée le seuil.\\
 	
 
-Le modèle de McCulloh-Pitts a été décliné en de multiple manières au cours du temps. Les déclinaisons auxquelles nous allons nous intérèsser sont appelées le modèle Perceptron et le modèle Sigmoid. Ces deux modèles introduisent la notion de poids qui est au coeur du processus d'apprentissage d'un réseau de neurone. 
+Le modèle de McCulloh-Pitts a été décliné en de multiple manières au cours du temps. Les déclinaisons auxquelles nous allons nous intéresser sont appelées le modèle Perceptron et le modèle Sigmoid. Ces deux modèles introduisent la notion de poids qui est au cœur du processus d'apprentissage d'un réseau de neurone. 
 
 \subsection{Définition: Modèle Perceptron}
 		Le premier modèle du Perceptron a été introduit en 1958 par Frank Rosenblatt. Celui-ci a ensuite été repris et perfectionné dans les années soixante par Minsky et Papert. Ce modèle reprend la définition précédente sauf que pour chaque entrées $x_i$ ($i$ $\in$ $\llbracket 1~;~n \rrbracket$) on y associera une valeur (les fameux poids) $w_i$ $\in$ $\mathbb{R}$. 
@@ -101,7 +103,7 @@ Le modèle de McCulloh-Pitts a été décliné en de multiple manières au cours
 \vfill
 %**************************************************************************************% 
 	 
-Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neurone. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neurone produise la meilleure sortie possible. Pour répondre au besoin du processus d'apprentissage, l'algorithme de la déscente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neurone vers la valeur voulue. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$, cependant la fonction $g$ ne sera  plus une fonction en escalier mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
+Cette notion de poids va intervenir dans le processus d'apprentissage d'un réseau de neurone. Le but de ce processus, sera de trouver les bonnes valeurs à associer aux entrées afin que le réseau de neurone produise la meilleure sortie possible. Pour répondre au besoin du processus d'apprentissage, l'algorithme de la descente de gradient sera utilisé. Nous détaillerons plus tard cet algorithme mais le principe de celui-ci est d'ajuster petit à petit les poids afin d'affiner la sortie du réseau de neurone vers la valeur voulue. Cet affinement implique que la sortie $s$ $\in$ $\left[0,1\right]$, cependant la fonction $g$ ne sera  plus une fonction en escalier mais une fonction continue. Le Perceptron ne répondant plus à ces critères, le Sigmoid a été introduit. \\
 % préciser le fait que avec une fonction en escalier il y a des gros saut et qu'avec une fonction continue il y a des petits sauts
 % la particularitée ???
 	\subsection{Définition: Modèle Sigmoid}
@@ -130,22 +132,22 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
  	Un réseau de neurone est un ensemble de neurones connectés entre eux. Ce réseau est composé de plusieurs couches : 
 	\begin{enumerate}	
 		\item la couche d'entrée : Cette couche est composée de neurones dont leurs entrées n'est pas la sortie d'autre neurone. 
-		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neurone. Les entrées des neurones sont les sorties de ceux de la couche précèdente.
-		\item la couche de sortie : Cette couche nous donne le résultat du réseau. Elle peut être formée d'un ou plusieur neurone.
+		\item la couche cachée : Cette couche peut être composée de plusieurs couches de neurone. Les entrées des neurones sont les sorties de ceux de la couche précédente.
+		\item la couche de sortie : Cette couche nous donne le résultat du réseau. Elle peut être formée d'un ou plusieurs neurone.
 	\end{enumerate}		
 % a faire un schéma pour le réseau de neurone 
 		
 	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neurone et comment etait-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problèmes. 
 	
 	
-\section{L'Apprentissage}	
+\section{L'apprentissage}	
 L'une des particularités des réseaux de neurones est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction de coût. \\
  
 	\subsection{Définition: Fonction de coût}
 		Soit $C_{x}$ une fonction telle que :	
 		  \[ \fonction{C_{x}}{\mathbb{R}^{n+1}}{\mathbb{R}}{(w_1,.....,w_{n+1})}{\frac{1}{2}(y(x)-\Phi_{x}(w_1,.....,w_{n+1}))^{2}}. \]
 
-		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neurone et $x$ correspondant à une entrée chosit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction de coût. \\
+		avec $(w_1,....,w_n)$ un vecteur poids, $w_{n+1}$ une valeur de seuil choisit pour le réseau de neurone et $x$ correspondant à une entrée choisit dont $y(x)$ est la valeur attendue après l'application du réseau. Cette fonction est appelée la fonction de coût. \\
 
 
  \textbf{Remarque }: 
@@ -185,7 +187,7 @@ L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n
 	\end{algorithmic}
 	\end{algorithm} 
 % appel ou appelle
-\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être chosi avec précaution. En effet, si celui-ci est trops grand, l'algorithme peut amener à une oscilation autour du minimum et si il est trops petit la convergence vers le minimum se ferra très lentement. 
+\textbf{Remarque }: $\alpha_{k}$ qu'on appelle le pas d'apprentissage doit être choisi avec précaution. En effet, si celui-ci est trops grand, l'algorithme peut amener à une oscillation autour du minimum et si il est trop petit la convergence vers le minimum se ferra très lentement. 
 On calcul le pas d'apprentissage à l'aide de l'algorithme suivant: 
 	\begin{algorithm}
 	\caption{Calcul du pas d'apprentissage}
@@ -256,7 +258,7 @@ $x = (u,v,p)$ 	avec $u$ et $v$ l'abscisse et l'ordonnée du point $x$ et $p$ sa 
 				 1 & \mbox{Si p est au dessus de d }
 	 		 \end{cases} \] \\
 Soit $ C_x(w_{1},w_{2},\theta) = \frac{1}{2}(y(x)-\Phi_x(w_{1},w_{2},\theta))^{2} $ la fonction de coût de $N$ avec $y(x)=p$.
-Il suffit maintemant de calculer le gradient de la fonction $\gamma$ afin d'appliquer l'Algorithme du Gradient pour que le réseau $N$ nous donne des valeurs prochent de la réalité.\\
+Il suffit maintenant de calculer le gradient de la fonction $\gamma$ afin d'appliquer l'algorithme du Gradient pour que le réseau $N$ nous donne des valeurs proches de la réalité.\\
 %************************************************** fin de l'exemple *****************************************************************
 \newline
 
@@ -269,7 +271,7 @@ grâce à la rétropropagation qui est une méthode qui va nous permettre de cal
 
 \subsection {B-Diagramme}
 Pour parler de la rétropropagation  nous nous devons d'introduire une nouvelle structure qui est le B-Diagramme (Backpropagation diagramme).
-Ce diagramme représente les neurones utilisés dans notre réseau mais dans lesquelle nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
+Ce diagramme représente les neurones utilisés dans notre réseau mais dans lesquelles nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
 \newline
 % préciser les dérivéees partielle dans le diagramme
 %************************************************** début de la figure *****************************************************************
@@ -291,7 +293,7 @@ Ce diagramme représente les neurones utilisés dans notre réseau mais dans les
  
 La rétropropagation ce divise en deux étapes :
 \begin{enumerate}
-\item L'étape de feed-forward : Cette étape consiste à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précèdement chaques valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au noeud suivant et le processus sera réitéré. % la régle avec leur et leurs
+\item L'étape de feed-forward : Cette étape consiste à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précédemment chaque valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au nœud suivant et le processus sera réitéré. % la régle avec leur et leurs
 \item L'étape de rétropropagation : Dans cette étape le réseau sera parcouru de droite à gauche et la valeur stockée à gauche sera 
 utilisée. Cette étape est divisée en plusieurs cas :
 \begin{enumerate}
@@ -371,15 +373,14 @@ utilisée. Cette étape est divisée en plusieurs cas :
 \end{enumerate}
 \newpage
 \section{Réseau de neurone et résolution de formule booléenne quantifiée}
-Dans la partie précédente nous avons vu comment un réseau de neurone pouvait être entrainé et ainsi devenir plus performant. Dans cette partie, nous allons voir comment nous pouvons entrainer un réseau de neurone afin que celui-ci puisse résoudre des formules booléennes quantifées.
+Dans la partie précédente nous avons vu comment un réseau de neurone pouvait être entrainé et ainsi devenir plus performant. Dans cette partie, nous allons voir comment nous pouvons entrainer un réseau de neurone afin que celui-ci puisse résoudre des formules booléennes quantifiées.
 Afin qu'un réseau de neurone puisse résoudre une formule booléenne quantifiée, il faut que celle-ci soit mise sous forme prénexe.
 \subsection{Définition : Forme prénexe}
 	On dit que une formule et sous forme prénexe si tout ses quantificateurs existentiels et universels sont placés au début de la formule. 
 	\[ G= Q_{1}x_{1}Q_{2}x_{2}....Q_{n}x_{2}G' \] avec $G'$ une formule booléenne sans quantificateur.
 \newline \\
-Afin de résoudre une formule quantifiée, on utilisera deux réseaux de neurone qui s'affronterons dans un jeu dont les règles sont les suivante : 
-	Un réseau se chargera de choisir les éléments pour les quantifiateurs existentiels  
-	L'autre réseau se chargera de choisir les éléments pour les quantifiateurs universels. Le but est qu'un des deux réseaux trouve une stratégie gagnante.
+Afin de résoudre une formule quantifiée, on utilisera deux réseaux de neurone qui s'affronteront dans un jeu dont les règles sont les suivante : 
+	%% à compléter
 	%% Développer le jeu 
 
 Les deux réseaux de neurone que nous utilisons sont constitués de la même façon. Leur constitution est donnée par le schéma suivant.
