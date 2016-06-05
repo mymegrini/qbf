@@ -24,7 +24,11 @@
 
 \begin{document}
 \section{Introduction}
-L'apprentissage profond est une branche du machine learning. Dans cette branche, nous trouvons des algorithmes qu'on utilise principalement dans la reconnaissance d'image et vocal et qui est capable d'apprendre de manière autonome ou supervisé. Notre projet consiste à utiliser l'apprentissage profond dans le problème des formules quantifiées booléenne (dit QBF). Les formules booléennes quantifiées permettent de modéliser de nombreuses situations de la vie courante. Une des questions que nous pouvons nous poser est de savoir si celles-ci sont satisfaisable ou non. Cette question est un grand problème dans l'informatique théorique qu'on place dans la classe PSPACE-complet. Le fait d'utiliser l'apprentissage profond afin de savoir si une formule QBF est satisfaisable est très peu commun et reste une démarche expérimental. Dans ce rapport, nous allons premièrement parler des outils de base qu'on utilise dans l'apprentissage profond qui sont les neurones et réseaux de neurones. Nous allons ensuite voir la notions clef de ce domaine qui est l'apprentissage. Nous terminerons ce rapport en parlant de notre démarche expérimental qui
+L'apprentissage profond est une branche du machine learning. Dans cette branche, nous trouvons des algorithmes qu'on utilise principalement dans la reconnaissance d'image et vocal, et qui est capable d'apprendre de manière autonome ou supervisé. L'alphago créé par Google, est une intelligence artificielle qui peut imager les capacités hors norme de l'apprentissage profond, car celle-ci a été le premier logiciel à avoir battu des joueurs professionnels de GO. L'apprentissage profond est très répandu dans le monde du jeu et l'alphago n'est pas le seul exemple qu'on peut trouver. Notre projet consiste à utiliser l'apprentissage profond dans le problème des formules quantifiées booléenne (dit QBF). Les formules booléennes quantifiées permettent de modéliser de nombreuses situations de la vie courante. Une des questions que nous pouvons nous poser est de savoir si celles-ci sont satisfaisable ou non. Cette question est un grand problème dans l'informatique théorique qu'on place dans la classe PSPACE-complet. Nous allons donc essayer  de résoudre une formule QBF en faisant affronter deux réseaux de neurones, qui représentent les différent quantificateurs, sur un jeu où chaque réseaux devra faire le meilleur choix possible pour une variable. Le fait d'utiliser l'apprentissage profond afin de savoir si une formule QBF est satisfaisable est très peu commun et reste une démarche expérimental.
+\newline
+Problématique : Qu'es-ce que va nous donner l'aspect jeu sur la résolution de problème type QBF?
+\newline
+Dans ce rapport, nous allons premièrement parler des outils de base qu'on utilise dans l'apprentissage profond qui sont les neurones et réseaux de neurones. Nous allons ensuite voir la notions clef de ce domaine qui est l'apprentissage. Nous terminerons ce rapport en parlant de notre démarche expérimental qui
 sera un algorithme permettant de vérifier la satisfaisabilitée d'une formule QBF.  
 \newpage
 
@@ -374,12 +378,12 @@ utilisée. Cette étape est divisée en plusieurs cas :
 \newpage
 \section{Réseau de neurone et résolution de formule booléenne quantifiée}
 Dans la partie précédente nous avons vu comment un réseau de neurone pouvait être entrainé et ainsi devenir plus performant. Dans cette partie, nous allons voir comment nous pouvons entrainer un réseau de neurone afin que celui-ci puisse résoudre des formules booléennes quantifiées.
-Afin qu'un réseau de neurone puisse résoudre une formule booléenne quantifiée, il faut que celle-ci soit mise sous forme prénexe.
+Afin qu'un réseau de neurone puisse résoudre une formule QBF, il faut que celle-ci soit mise sous forme prénexe.
 \subsection{Définition : Forme prénexe}
 	On dit que une formule et sous forme prénexe si tout ses quantificateurs existentiels et universels sont placés au début de la formule. 
 	\[ G= Q_{1}x_{1}Q_{2}x_{2}....Q_{n}x_{2}G' \] avec $G'$ une formule booléenne sans quantificateur.
 \newline \\
-Afin de résoudre une formule quantifiée, on utilisera deux réseaux de neurone qui s'affronteront dans un jeu dont les règles sont les suivante : 
+ On utilisera deux réseaux de neurone qui s'affronteront dans un jeu dont les règles sont les suivante : 
 	%% à compléter
 	%% Développer le jeu 
 
