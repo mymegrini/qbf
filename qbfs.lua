@@ -510,5 +510,4 @@ if verbosity>=1 then
    print("Result: " .. ((r+1)/2) .. " (var " .. v .. ")")
    print("\nPercentage:")
 end
-percentage((r+1)/2)
 percentage(-1)
