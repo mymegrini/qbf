@@ -5,6 +5,7 @@
 !*.tex
 !*.output
 !*.sh
+!data
 *~
 .*
 #*

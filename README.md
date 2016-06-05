@@ -10,6 +10,6 @@ A QBF solver using two adversarial neural networks.
     * sleep     : number of seconds between each print
     * verbosity :
       * 0 : silent
-      * 1 : sessions only
-      * 2 : sessions and training sets
+      * 1 : (default) sessions only
+      * 2 : preamble, sessions and training sets
       * 3 : full

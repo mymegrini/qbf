@@ -208,8 +208,8 @@ uni = init(variables) -- aims for loss
 exi = init(variables) -- aims for win
 
 if verbosity>=2 then
-print("Neural network model:")
-print(uni)
+   print("Neural network model:")
+   print(uni)
 end
 
 print("")
@@ -313,6 +313,7 @@ function build(s, v, r)
    -- learning targets
    local uni_val = torch.Tensor(u):zero()
    local exi_val = torch.Tensor(e):zero()
+   -- batch sizes
    local uni_size = 0
    local exi_size = 0
 
@@ -339,6 +340,65 @@ function build(s, v, r)
    return uni_set, uni_val, u_i, exi_set, exi_val, e_i
 end
 
+-- inputs memory
+su = math.max(u,10)*u
+se = math.max(e,10)*e
+uni_mset = torch.Tensor(su, variables):zero()
+exi_mset = torch.Tensor(se, variables):zero()
+-- targets memory
+uni_mval = torch.Tensor(su):zero()
+exi_mval = torch.Tensor(se):zero()
+-- data sizes
+uni_msize = 0
+exi_msize = 0
+-- Storing data into memory
+function store(us, uv, ui, es, ev, ei)
+   for i=1,ui do
+      -- check for duplicates
+      for j=1,uni_msize do
+	 if torch.all(torch.eq(uni_mset[j], us[ui]))
+	 then
+	    uni_mval[j] = uv[ui]
+	    goto u_done
+	 end
+      end
+      -- no duplicate found
+      if uni_msize < su
+      then
+	 uni_msize = uni_msize + 1
+	 uni_mset[uni_msize] = us[ui]
+	 uni_mval[uni_msize] = uv[ui]
+      else
+	 local k = torch.random(1, su)
+	 uni_mset[k] = us[ui]
+	 uni_mval[k] = uv[ui]
+      end
+      ::u_done::
+   end
+   for i=1,ei do
+      -- check for duplicates
+      for j=1,exi_msize do
+	 if torch.all(torch.eq(exi_mset[j], es[ei]))
+	 then
+	    exi_mval[j] = ev[ei]
+	    goto e_done
+	 end
+      end
+      -- no duplicate found
+      if exi_msize < se
+      then
+	 exi_msize = exi_msize + 1
+	 exi_mset[exi_msize] = es[ei]
+	 exi_mval[exi_msize] = ev[ei]
+      else
+	 local k = torch.random(1, se)
+	 exi_mset[k] = es[ei]
+	 exi_mval[k] = ev[ei]
+      end
+      ::e_done::
+   end
+end
+
 -- Training models
 function train(model, input, target, size)
 
@@ -352,8 +412,7 @@ function train(model, input, target, size)
 	    x:copy(_x)
 	 end
 
-	 local sample = (sample or 0) + 1
-	 if sample > size then sample = 1 end
+	 local sample = torch.random(1, size)
 
 	 dl_dx:zero()
 
@@ -374,23 +433,22 @@ function train(model, input, target, size)
       }
 
       local l = 0
-      for i = 1,1e2 do
-	 current_loss = 0
-	 for i =1,(#target)[1] do
-	    _,fs = optim.sgd(eval, x, sgd_params)
-	    current_loss = current_loss + fs[1]
-	 end
-	 current_loss = current_loss / (#target)[1]
-	 l = l + current_loss
+      
+      for i =1,(10*(#target)[1]) do
+	 _,fs = optim.sgd(eval, x, sgd_params)
+	 l = l + fs[1]
       end
-      return l/1e3
+      l = l / (10*(#target)[1])
+      return l
+   else
+      return 0
    end
 end
 
 function line()
    print(halfline .. halfline .. "\n")
 end
-   
+
 if verbosity>=1 then
    print("Press Enter to start.")
    io.stdin:read('*l')
@@ -405,27 +463,37 @@ t = os.clock()
 while n>0 do
    local s, v, r = result(session())
    local us, uv, ui, es, ev, ei = build(result(session()))
-   local ul = train(uni, us, uv, ui)
-   local el = train(exi, es, ev, ei)
-   if os.clock() > t + step
+   store(us, uv, ui, es, ev, ei)
+   local ul = train(uni, uni_mset, uni_mval, uni_msize)
+   local el = train(exi, exi_mset, exi_mval, exi_msize)
+   
+   if game == 0 or os.clock() > t + step
    then
-      t = os.clock()
+      if game>0 then t = os.clock() end
       if verbosity>=1 then
-      line()
-      print("Session " .. game ..":")
-      print(s)
-      print("Result: " .. ((r+1)/2) .. " (var " .. v .. ")\n")
+	 line()
+	 print("Session " .. game ..":")
+	 print(s)
+	 print("Result: " .. ((r+1)/2) .. " (var " .. v .. ")\n")
       end
       if verbosity>=2 then
-      print("Training set:\n")
-      print("uni: " .. ul)
-      print(us, uv)
-      print("exi: " .. el)
-      print(es, ev)
+	 print("Training set:\n")
+	 print("uni:")
+	 print(us, uv)
+	 print("exi:")
+	 print(es, ev)
+      end
+      if verbosity>=3 then
+	 print("Training data:\n")
+	 print("uni:")
+	 print(uni_mset, uni_mval)
+	 print("exi:")
+	 print(exi_mset, exi_mval)
       end
       if verbosity>=1 then
-      print("\nPercentage:")
-      percentage(-1)
+	 print("\nLoss: uni" .. ul .. " exi" .. el .."\n")
+	 print("\nPercentage:")
+	 percentage(-1)
       end
    end
    game = game + 1
@@ -444,4 +512,3 @@ if verbosity>=1 then
 end
 percentage((r+1)/2)
 percentage(-1)
-print("Count:" .. game)
