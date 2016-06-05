@@ -462,7 +462,7 @@ game = 0 -- current number of game sessions
 t = os.clock()
 while n>0 do
    local s, v, r = result(session())
-   local us, uv, ui, es, ev, ei = build(result(session()))
+   local us, uv, ui, es, ev, ei = build(s, v, r)
    store(us, uv, ui, es, ev, ei)
    local ul = train(uni, uni_mset, uni_mval, uni_msize)
    local el = train(exi, exi_mset, exi_mval, exi_msize)
