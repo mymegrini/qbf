@@ -2,15 +2,39 @@ require 'torch'
 require 'nn'
 require 'optim'
 
-local type = "p cnf "
+local halfline = "----------------------------------------"
 print("\nNNQBF\n")
+
+-- Choosing number of epochs, seconds and verbosity
+if #arg >= 2 -- epochs
+then
+   n = tonumber(arg[2])
+else
+   n = 1000
+end
+if #arg >= 3 -- print delay
+then
+   step = tonumber(arg[3])
+else
+   step = 1
+end
+if #arg >= 4 -- verbosity
+then
+   verbosity = tonumber(arg[4])
+else
+   verbosity = 2
+end
 
 -- Reading file
 file = torch.DiskFile(arg[1], 'r'):readString("*a")
-print("File :")
-print(file)
+if verbosity>=2
+then
+   print("File :")
+   print(file)
+end
 
 -- Checking type
+local type = "p cnf "
 if file:find(type) ~= 1
 then
    print("File type unrecognized")
@@ -58,11 +82,12 @@ function quantifiers(s)
 
       local a = s:find("a ")
       local e = s:find("e ")
-      --[[
-      print("sets:")
-      print(s)
-      print(a, e)
-      ]]
+      if verbosity >= 4
+      then
+	 print("sets:")
+	 print(s)
+	 print(a, e)
+      end
       if a ~= nil
       then
 	 if e ~= nil
@@ -101,11 +126,12 @@ function quantifiers(s)
       i = i + 1
    end
 
-   --[[
-   print("Reindexing:")
-   print(atomindex)
-   print(quantindex)
-   ]]
+   if verbosity>=3
+   then
+      print("Reindexing:")
+      print(atomindex)
+      print(quantindex)
+   end
 
    local qset = 0
    local var = 1
@@ -122,10 +148,7 @@ function quantifiers(s)
    end
 end
 
-print("Reindexing:")
 quantifiers(file)
-print(index)
-print("Quantifiers:")
 -- Counting atoms for each quantifier
 u = 0
 e = 0
@@ -133,7 +156,12 @@ for i=1,variables do
    e = e + quantifier[1][i]
    u = u + (1-quantifier[1][i])
 end
-print(quantifier)
+if verbosity>=2 then
+   print("Reindexing:")
+   print(index)
+   print("Quantifiers:")
+   print(quantifier)
+end
 
 -- Parsing clauses
 local cl = 1
@@ -159,8 +187,10 @@ while cl <= clauses do
       formula[cl][variables + 1] = formula[cl][variables + 1] + 1
    end
 end
-print("Formula:")
-print(formula)
+if verbosity>=2 then
+   print("Formula:")
+   print(formula)
+end
 
 -- Creating a neural network
 function init(size)
@@ -177,24 +207,11 @@ end
 uni = init(variables) -- aims for loss
 exi = init(variables) -- aims for win
 
+if verbosity>=2 then
 print("Neural network model:")
 print(uni)
--- print(uni(torch.Tensor(variables):fill(0)))
--- print(exi(torch.Tensor(variables):fill(0)))
-
-
--- Making random choice
---[[
-function play(output)
-   local v = 2 * torch.uniform() -1 + output
-   if v < 0
-   then
-      return -1
-   else
-      return 1
-   end
 end
-]]
+
 print("")
 
 -- showing progression
@@ -284,7 +301,6 @@ function result(s)
       end
    end
 end
--- print(result(session()))
 
 -- Building training data sets
 function build(s, v, r)
@@ -371,26 +387,20 @@ function train(model, input, target, size)
    end
 end
 
-print("Press Enter to start.")
-io.stdin:read('*l')
-print("Running:\n")
-print("-------------------------------------------------------------------------------\n")
+function line()
+   print(halfline .. halfline .. "\n")
+end
+   
+if verbosity>=1 then
+   print("Press Enter to start.")
+   io.stdin:read('*l')
+   print("Running:\n")
+   line()
+end
 
 -- running the algorithm
 game = 0 -- current number of game sessions
--- Choosing number of epochs
-if #arg >= 2
-then
-   n = tonumber(arg[2])
-else
-   n = 1000
-end
-if #arg >= 3
-then
-   step = tonumber(argv[3])
-else
-   step = 1
-end
+
 t = os.clock()
 while n>0 do
    local s, v, r = result(session())
@@ -400,19 +410,23 @@ while n>0 do
    if os.clock() > t + step
    then
       t = os.clock()
+      if verbosity>=1 then
+      line()
       print("Session " .. game ..":")
       print(s)
       print("Result: " .. ((r+1)/2) .. " (var " .. v .. ")\n")
-      --[[
+      end
+      if verbosity>=2 then
       print("Training set:\n")
       print("uni: " .. ul)
       print(us, uv)
       print("exi: " .. el)
       print(es, ev)
-      ]]
+      end
+      if verbosity>=1 then
       print("\nPercentage:")
       percentage(-1)
-print("-------------------------------------------------------------------------------\n")
+      end
    end
    game = game + 1
    n = n-1
@@ -421,9 +435,13 @@ end
 -- print final session without exploration
 explore = false
 local s, v, r = result(session())
-print("Session " .. game ..":")
-print(s)
-print("Result: " .. ((r+1)/2) .. " (var " .. v .. ")")
-print("\nPercentage:")
+if verbosity>=1 then
+   line()
+   print("Session " .. game ..":")
+   print(s)
+   print("Result: " .. ((r+1)/2) .. " (var " .. v .. ")")
+   print("\nPercentage:")
+end
 percentage((r+1)/2)
 percentage(-1)
+print("Count:" .. game)
