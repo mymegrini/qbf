@@ -514,14 +514,26 @@ Leur structure est donnée par le schéma suivant :
 \end{center}
 
 \subsection{Déscription de l'algortihme}
-L'algorithme que nous utiliserons est le suivant.
 	\begin{algorithm}
-	\caption{Apprentissage profond et QBF}
+	\caption{Deep QBF-SAT solver}
 	\begin{algorithmic}
-	\REQUIRE  
-	\STATE   
-	\STATE  
+	\REQUIRE  $k$ 
+	\WHILE{$ cmp < k$}
+	\STATE  s, v, r = result(session())
+	\STATE  us, uv, ui, es, ev, ei = build(s, v, r);
+	\STATE store(us, uv, ui, es, ev, ei);
+	\STATE train(uni, uniMset, uniMval, uniMsize);
+	\STATE train(exi, exiMset, exiMval, exiMsize);
+	\STATE $cmp++$;
+	\ENDWHILE
 	\end{algorithmic}
 	\end{algorithm} 
+	La fonction session permet de créer un tableau de taille $2*nombrevariable$ qui contient la valeur prise pour chaque variable et la valeur sortie par le réseau de neuronne.
+	La fonction result va permettre d'avoir un triplet (s,v,r) où s correspond au tableau session, r correspond à la valuation prise par la formule pour le tableau session et v correspond à un indice.
+	La fonction built va nous renvoyer un hexatuplet (us,uv,ui,es,ev,ei) avec us qui correspond à un tableau qui contient les valeurs prise pour chaque quantificateurs universel, uv un tableau qui contient les valeurs retourné par le réseau de neurone pour chaque variable en amélioré.
+	IDEM pour es,ev,ei.
+	La fonction result va permettre de stocker ce triplet dans une matrice. Cette matrice est un tableau de taille fixe, on choisira au hasard de supprimer un hexatuplet dans cette matrice et on le remplacera par le nouveau.  
+	Nous entrainons ensuite les deux réseaux, pour un chiffre donnée. Nous aurons à la fin un résultat
+qui tendra vers la valeur 1 ou 0 selon si la formule est satisfaisable ou pas.  
 
 \end{document}
