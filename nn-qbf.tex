@@ -19,7 +19,7 @@
 \newcommand{\fonction}[5]{
     \begin{array}{ccccc}
 #1 & : & #2 & \to & #3\\
-	& & #4 & \mapsto & #5\\ 
+    & & #4 & \mapsto & #5\\ 
 	\end{array}
 }
 \renewcommand{\contentsname}{Table des matières}
@@ -475,65 +475,89 @@ Ce fichier décrit la formule suivante :
 
 
 \subsection{Choix des réseaux de neurones}
-Pour résoudre une formule on utilisera deux réseaux qui s'affronteront dans un jeu. Un réseau représentera les quantificateurs universels et l'autre représentera les quantificateurs existentiels. Celui qui représentera les quantificateurs universels aura pour but de choisir des valuations qui permettront de rendre la formule fausse. Le réseau qui représentera les quantificateur existentiels aura pour but de choisir des valuations qui permettront de rendre vraie la formule. Au fur et mesure de l'exécution de l'algorithme, le pourcentage de victoires du réseau existentiel tendra vers $0\%$ si la formule est fausse et vers $100\%$ si elle est vraie. Les deux réseaux de neurone auront la même structure.\newpage
+Pour résoudre une formule on utilisera deux réseaux qui s'affronteront dans un jeu. Un réseau représentera les quantificateurs universels et l'autre représentera les quantificateurs existentiels. Celui qui représentera les quantificateurs universels aura pour but de choisir des valuations qui permettront de rendre la formule fausse. Le réseau qui représentera les quantificateur existentiels aura pour but de choisir des valuations qui permettront de rendre vraie la formule. Au fur et mesure de l'exécution de l'algorithme, le pourcentage de victoires du réseau existentiel tendra vers $0\%$ si la formule est fausse et vers $100\%$ si elle est vraie. Les deux réseaux de neurone auront la même structure.\\
+La taille de l'entrée du réseau de neurone est le nombre de variables de la formule donnée.
+\newpage
 
-Leur structure est donnée par le schéma suivant :
+Leur structure est donnée par le schéma suivant pour une formule :\\
 
 %% Exprime le réseau de neurone qu'on a 
 \begin{center}
 \begin{tikzpicture}[]
 	%\draw[help lines, thick] (0,0) grid (11,5);
-	\draw (2.5,2.5) node {L} circle [x radius=0.5, y radius=1.5];
-	\draw (4.5,2.5) node {S} circle [x radius=0.5, y radius=1.5];
-	\draw (6.5,2.5)node{L}circle[x radius=0.5, y radius=1.5];
-	\draw (8.5,2.5) node {S} circle [x radius=0.5, y radius=1.5];
-	\draw [->] (3,2.5)--(4,2.5);
-	\draw [->] (1,2.5)--(2,2.5);
-	\draw [->] (5,2.5)--(6,2.5);
-	\draw [->] (7,2.5)--(8,2.5);
+	\draw (3.5,2.5) node {$A_1,B_1$} circle [x radius=.7, y radius=1.5];
+	\draw (6.5,2.5) node {$A_2,B_2$} circle [x radius=.7, y radius=1.5];
+	\draw (9.5,2.5) node {V} circle [x radius=0.4, y radius=0.4];
+	\draw [->] (1.5,1.5)--(2.5,1.5);
+	\draw [->] (1.5,2)--(2.5,2);
+	\draw [->] (1.5,2.5)--(2.5,2.5);
+	\draw [->] (1.5,3)--(2.5,3);
+	\draw [->] (1.5,3.5)--(2.5,3.5);
+	\draw [->] (4.5,1.5)--(5.5,1.5);
+	\draw [->] (4.5,2)--(5.5,2);
+	\draw [->] (4.5,2.5)--(5.5,2.5);
+	\draw [->] (4.5,3)--(5.5,3);
+	\draw [->] (4.5,3.5)--(5.5,3.5);
+	\draw [->] (7.5,1.5)--(8.5,2.1);
+	\draw [->] (7.5,2)--(8.5,2.3);
+	\draw [->] (7.5,2.5)--(8.5,2.5);
+	\draw [->] (7.5,3)--(8.5,2.7);
+	\draw [->] (7.5,3.5)--(8.5,2.9);
 	\draw (0,4)--(1,4);
 	\draw (0,4)--(0,1); 
 	\draw (1,4)--(1,1); 
 	\draw (0,1)--(1,1);
-	\draw (4,4)--(4,4.2);
-	\draw (7,4)--(7,4.2);
-	\draw (4,4.2)--(7,4.2);
 	\draw (0.5,3.5) node{1};
 	\draw (0.5,3) node{-1};
-	\draw (0.5,2.5) node{\vdots};
+	\draw (0.5,2.5) node{-1};
 	\draw (0.5,2) node{0};
-	\draw (0.5,1.7) node{\vdots};
-	\draw (0.5,2) node{0};
-	\draw (0.5,1.2) node{0};
-	\draw [->] (9,2.5)--(10,2.5);
-	\draw (2.5,4.5) node {\textbf{Couche d'entrée}}; 
-	\draw (5.5,4.5) node {\textbf{Couche cachée}}; 
-	\draw (8.5,4.5) node {\textbf{Couche de sortie}}; 
-	\draw (5.5,0) node { \textbf{figure 11 - Structure des réseaux de neurones }};
+	\draw (0.5,1.5) node{0};
+	\draw (.5,4.5) node {\textbf{État}}; 
+	\draw (2,3.7) node {\textbf{$X_0$}}; 
+	\draw (5,3.7) node {\textbf{$X_1$}}; 
+	\draw (8,3.7) node {\textbf{$X_2$}}; 
+	\draw (3.5,4.5) node {\textbf{Couche d'entrée}}; 
+	\draw (6.5,4.5) node {\textbf{Couche cachée}}; 
+	\draw (9.5,4.5) node {\textbf{Couche de sortie}}; 
+	\draw (5.5,0) node { \textbf{figure 11 - Structure des réseaux de neurones (taille 5)}};
 \end{tikzpicture}
 \end{center}
 
-\subsection{Déscription de l'algortihme}
+Chaque réseau de neurone prend, en entrée, un état particulier du jeu (représentant une valuation partielle) et renvoie sa valeur $V\in[0,1]$.\\
+Chaque neurone d'une couche de intermédiaire calcule l'image par la fonction sigmoïde d'une somme linéaire pondérée avec inclinaison de ses entrées. La transformation effectuée par la couche $i+1$ se traduit donc par :
+\[ X_{i+1} = S(A_{i+1}X_i+B_{i+1}) \]
+où :
+\begin{enumerate}
+\item[-] $X_i$ : vecteur reçu en entrée de couche
+\item[-] $X_{i+1}$ : vecteur obtenue en sortie de couche
+\item[-] $S$ : calcule l'image coordonnée par coordonnée du vecteur $A_{i+1}X_i+B_{i+1}$ par la fonction sigmoïde
+\item[-] $A_{i+1}$ : matrice des poids
+\item[-] $B_{i+1}$ : vecteur d'inclinaison
+\end{enumerate}
+La matrice des poids de la couche d'entrée est une matrice carrée, celle de la couche cachée est une matrice ligne.
+\subsection{Description formelle de l'algorithme}
 	\begin{algorithm}
 	\caption{Deep QBF-SAT solver}
 	\begin{algorithmic}
 	\REQUIRE  $k$ 
 	\WHILE{$ cmp < k$}
-	\STATE  s, v, r = result(session())
-	\STATE  us, uv, ui, es, ev, ei = build(s, v, r);
-	\STATE store(us, uv, ui, es, ev, ei);
-	\STATE train(uni, uniMset, uniMval, uniMsize);
-	\STATE train(exi, exiMset, exiMval, exiMsize);
+	\STATE  s, r = result(session())
+	\STATE  us, uv, es, ev = build(s, r);
+	\STATE store(us, uv, es, ev);
+	\STATE train(uni, uniMset, uniMval);
+	\STATE train(exi, exiMset, exiMval);
 	\STATE $cmp++$;
 	\ENDWHILE
 	\end{algorithmic}
-	\end{algorithm} 
-	La fonction session permet de créer un tableau de taille $2*nombrevariable$ qui contient la valeur prise pour chaque variable et la valeur sortie par le réseau de neuronne.
-	La fonction result va permettre d'avoir un triplet (s,v,r) où s correspond au tableau session, r correspond à la valuation prise par la formule pour le tableau session et v correspond à un indice.
-	La fonction built va nous renvoyer un hexatuplet (us,uv,ui,es,ev,ei) avec us qui correspond à un tableau qui contient les valeurs prise pour chaque quantificateurs universel, uv un tableau qui contient les valeurs retourné par le réseau de neurone pour chaque variable en amélioré.
-	IDEM pour es,ev,ei.
-	La fonction result va permettre de stocker ce triplet dans une matrice. Cette matrice est un tableau de taille fixe, on choisira au hasard de supprimer un hexatuplet dans cette matrice et on le remplacera par le nouveau.  
-	Nous entrainons ensuite les deux réseaux, pour un chiffre donnée. Nous aurons à la fin un résultat
-qui tendra vers la valeur 1 ou 0 selon si la formule est satisfaisable ou pas.  
+	\end{algorithm}
+	L'algorithme consiste, pendant un nombre d'itérations donné $k$, à faire s'affronter les deux réseaux de neurones dans le cadre du jeu existentiel/universel décrit précédemment. À chaque itération, on recueille de nouvelles données d'expérience pour chacun des réseaux. On les ajuste selon le résultat de la partie puis on les rajoute aux données d'entrainement qu'on utilise pour le processus d'apprentissage.
+	Les différentes étapes de chaque itération sont les suivantes :
+	\begin{enumerate}
+	\item \textbf{session:} calcule une session du jeu existentiel/universel et renvoie une matrice contenant la valuation choisie et les valeurs renvoyées par les réseaux de neurones pour chacun des choix
+	\item \textbf{result:} prend en entrée une session et renvoie un couple $(s,v)$ où $s$ correspond à ladite session et $r$ correspond à la valeur de vérité de la formule pour la valuation contenue dans s et leau session
+	\item \textbf{build:} prend en entrée le couple $(s,v,r)$ et renvoie les données d'expérience $us,uv$ pour le réseau \textit{UNI} et $es,ev$ pour le réseau \textit{EXI}, $us$ et $es$ contiennent les états rencontrés par les deux réseaux, $uv$ et $ev$ contiennent les nouvelles valeurs cibles pour la phase d'apprentissage
+	\item \textbf{store:} prend en entrée les données d'expérience $us,uv$ et $es,ev$ et les enregistre respectivement dans les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$  
+	\item \textbf{train:} effectue la phase d'apprentissage pour chacun des réseaux en utilisant les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$ 
+	\end{enumerate}	 
 
 \end{document}
