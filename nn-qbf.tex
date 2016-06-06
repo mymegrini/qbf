@@ -16,23 +16,42 @@
 
 % fonction pour définir une fonction 
 \newcommand{\fonction}[5]{
-	\begin{array}{ccccc}
+    \begin{array}{ccccc}
 #1 & : & #2 & \to & #3\\
 	& & #4 & \mapsto & #5\\ 
 	\end{array}
 }
-
+\renewcommand{\contentsname}{Table des matières}
 \begin{document}
-\section{Introduction}
-L'apprentissage profond est une branche du machine learning. Dans cette branche, nous trouvons des algorithmes qu'on utilise principalement dans la reconnaissance d'image et vocal, et qui est capable d'apprendre de manière autonome ou supervisé. L'alphago créé par Google, est une intelligence artificielle qui peut imager les capacités hors norme de l'apprentissage profond, car celle-ci a été le premier logiciel à avoir battu des joueurs professionnels de GO. L'apprentissage profond est très répandu dans le monde du jeu et l'alphago n'est pas le seul exemple qu'on peut trouver. Notre projet consiste à utiliser l'apprentissage profond dans le problème des formules quantifiées booléenne (dit QBF). Les formules booléennes quantifiées permettent de modéliser de nombreuses situations de la vie courante. Une des questions que nous pouvons nous poser est de savoir si celles-ci sont satisfaisable ou non. Cette question est un grand problème dans l'informatique théorique qu'on place dans la classe PSPACE-complet. Nous allons donc essayer  de résoudre une formule QBF en faisant affronter deux réseaux de neurones, qui représentent les différent quantificateurs, sur un jeu où chaque réseaux devra faire le meilleur choix possible pour une variable. Le fait d'utiliser l'apprentissage profond afin de savoir si une formule QBF est satisfaisable est très peu commun et reste une démarche expérimental.
-\newline
-Problématique : Qu'es-ce que va nous donner l'aspect jeu sur la résolution de problème type QBF?
-\newline
-Dans ce rapport, nous allons premièrement parler des outils de base qu'on utilise dans l'apprentissage profond qui sont les neurones et réseaux de neurones. Nous allons ensuite voir la notions clef de ce domaine qui est l'apprentissage. Nous terminerons ce rapport en parlant de notre démarche expérimental qui
-sera un algorithme permettant de vérifier la satisfaisabilitée d'une formule QBF.  
+
+\title{
+	{Résolution de Formules Booléennes Quantifiées à l'aide de Réseaux de Neurones}\\
+	{\large Université Paris-Diderot}
+}
+\author{
+	{Mohammed Younes Megrini}\\
+	{Nicolas Nalpon}
+}
+\date{6 juin 2016}
+\maketitle
 \newpage
 
-\section[Titre plus court]{Les Neurones}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Il y a 20 ans, Deep Blue, un programme développé par IBM, remportait une victoire historique aux échecs contre Garry Kasparov, le champion mondiale d'échecs à l'époque. En mars 2016, AlphaGo, développé par Google Deepmind, vient de remporter une victoire au jeu de Go contre Lee Sedol, l'un des meilleurs joueurs de Go au monde. Le jeu de Go est considéré comme un défi majeure de l'intelligence artificielle et cette victoire témoigne d'avancées très prometteuses.
+
+Au cœur d'AlphaGo, l'apprentissage profond est la technologie qui est en phase de révolutionner le domaine de l'intelligence artificielle. Faisant partie de la catégorie des algorithmes évolutifs et, plus particulièrement, des algorithmes d'apprentissage automatique, l'apprentissage profond consiste à optimiser progressivement une succession de transformations non-linéaires des données afin de résoudre des problèmes d'analyse et de classification. Grâce à cette approche, on arrive à développer des algorithmes de classification (reconnaissance faciale et vocale, vision par ordinateur, reconnaissance d'écriture manuscrite...) ou de décision (AlphaGo pour le jeu de Go, Deep Q-Learner pour les jeux Atari...).\\
+
+Notre projet consiste à utiliser l'apprentissage profond pour développer une méthode heuristique de traiter le problème de la satisfaisabilité des formules booléennes quantifiées (dit QBF-SAT) qui est une généralisation du problème de satisfaisabilité booléenne (dit SAT). Nous nous limiterons aux formules normales conjonctives prénexes suivant le format standard QDimacs.
+
+Comme il est possible de voir une formule booléenne quantifiée comme un jeu à deux adversaires et que l'existence d'une stratégie gagnante pour l'un des deux joueurs détermine la valeur de vérité de la formule, notre algorithme consistera à faire s'affronter les deux stratégies opposées, en les améliorant progressivement, de sorte à en déduire la valeur de vérité de la formule.\\
+
+Dans ce rapport, nous allons premièrement décrire le fonctionnement des réseaux de neurones et du processus d'apprentissage et les illustrer par un exemple théorique simple. Ensuite, on décrira en détail le fonctionnement de l'algorithme présenté plus haut.
+\newpage
+
+\section{Les Réseaux de Neurones}
 Le premier modèle mathématique et informatique du neurone biologique a été donné par Warren McCulloh et Walter Pitts en 1943.
 Ce modèle inspiré de la neurobiologie, fait intervenir n entrées auxquelles des fonctions y seront appliquées afin d'en obtenir une sortie.
 Voici une définition plus formelle de ce modèle qu'on nomme: Modèle de McCulloh-Pitts     
@@ -144,7 +163,7 @@ Cette notion de poids va intervenir dans le processus d'apprentissage d'un rése
 	Nous avons défini dans cette partie qu'es ce qu'était un réseau de neurone et comment etait-il formé. Nous allons maintenant voir comment nous pouvons utiliser celui-ci dans divers problèmes. 
 	
 	
-\section{L'apprentissage}	
+\section{Le processus d'apprentissage}	
 L'une des particularités des réseaux de neurones est le fait de pouvoir apprendre au cours du temps. Cette apprentissage, est en réalité l'optimisation d'une fonction issue du réseau utilisé. On appel cette fonction la fonction de coût. \\
  
 	\subsection{Définition: Fonction de coût}
@@ -171,7 +190,7 @@ L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n
 					\frac{\partial f}{\partial x_n}\\
 				 \end{pmatrix} \] 
 
-\subsection{Algorithme du Gradient}
+\subsection{Algorithme de descente du Gradient}
  	
 	Cette algorithme va permettre de générer une suite  $x_{1},....,x_{k} \in \mathbb{R}^{n+1}$ jusqu'à que la condition d'arrêt soit satisfaite. On note $x_{1},....,x_{k}$ les différents vecteurs poids que l'algorithme calculera.
 \newpage
@@ -422,4 +441,4 @@ Les deux réseaux de neurone que nous utilisons sont constitués de la même fa�
 	\draw (5.5,0) node { \textbf{figure 10 - Constitution des réseaux de neurones }};
 \end{tikzpicture}
 \end{center}
-\end{document} 
+\end{document}
