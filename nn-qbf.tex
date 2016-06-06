@@ -13,6 +13,7 @@
 %\usepackage[]{algorithm2e}
 \usepackage[]{algorithm}
 \usepackage[]{algorithmic}
+\usepackage{framed}
 
 % fonction pour définir une fonction 
 \newcommand{\fonction}[5]{
@@ -234,14 +235,14 @@ L'optimisation de $\gamma$ nous permettra de trouver la famille $(w_1,.....,w_{n
 
 \subsection{Algorithme de descente du Gradient}
  	
-	Cette algorithme va permettre de générer une suite  $x_{1},....,x_{k} \in \mathbb{R}^{n+1}$ jusqu'à que la condition d'arrêt soit satisfaite. On note $x_{1},....,x_{k}$ les différents vecteurs poids que l'algorithme calculera.
+	Cet algorithme va permettre de générer une suite  $x_{1},....,x_{k} \in \mathbb{R}^{n+1}$ jusqu'à que la condition d'arrêt soit satisfaite. On note $x_{1},....,x_{k}$ les différents vecteurs poids que l'algorithme calculera.
 	
 \begin{algorithm}
 	\caption{La Descente de Gradient}
 	\begin{algorithmic}
 	\REQUIRE $x_{0} \in \mathbb{R}^{n+1}$ vecteur poids qu'on choisit initialement \\ 
 	$c$ nombre d'étape maximum qu'on autorise  \\ % le mettre aux plurielles? 
-	$\varepsilon \ge 0$ seuil qu'on choisit dont le gradient ne doit pas franchir \\ 
+	$\varepsilon \ge 0$ seuil qu'on choisit que le gradient ne doit pas franchir \\ 
 	$k=0$
 	\WHILE{$\mid \mid \nabla f(x_{k}) \mid \mid  \ge \varepsilon$ and $k \neq c  $}
 		\STATE Calcul de $\nabla f(x_{k})$ \; % calcule avec un e ou sans e 
@@ -273,7 +274,7 @@ On calcul le pas d'apprentissage à l'aide de l'algorithme suivant:
 
 \subsection{Exemple}
 
-Le but de cet exemple est de montrer comment un réseau de neurone $N$ peut apprendre la position des points d'un plan par rapport à une droite $d$.
+Le but de cet exemple est de montrer comment un réseau de neurone $N$ peut apprendre à déterminer la position des points d'un plan par rapport à une droite.
 
 \vfill
 \begin{center}
@@ -286,20 +287,20 @@ Le but de cet exemple est de montrer comment un réseau de neurone $N$ peut appr
 	\filldraw (0.4,1.3) circle (2pt);
 	\filldraw (1.8,3.5) circle (2pt);
 	\draw (0,0) -- (4,4);
-	\filldraw (2,1) [fill=red] circle (2pt);
-	\filldraw (3,1) [fill=red] circle (2pt);
-	\filldraw (3.5,2.5) [fill=red] circle (2pt);
-	\filldraw (3.6,1.2) [fill=red] circle (2pt);
-	\filldraw (0.8,0.5) [fill=red] circle (2pt);
-	\draw (2,-1) node { \textbf{figure 4 - exemple 1} };
+	\filldraw (2,1) [fill=white] circle (2pt);
+	\filldraw (3,1) [fill=white] circle (2pt);
+	\filldraw (3.5,2.5) [fill=white] circle (2pt);
+	\filldraw (3.6,1.2) [fill=white] circle (2pt);
+	\filldraw (0.8,0.5) [fill=white] circle (2pt);
+	\draw (2,-1) node { \textbf{figure 5 - exemple 1} };
 \end{tikzpicture}
 \end{center}
 \vfill
 
 
 Pour cela nous allons introduire un réseau de neurone composé d'une unité de type Sigmoid.
-Ce neurone aura pour entrées les coordonnées du point choisit et pour sortie la valeur de la fonction d'activation qui est définit comme suit: 
-\[ \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}. \]
+Ce neurone aura pour entrées les coordonnées du point choisi et pour sortie la valeur de la fonction d'activation qui est définie comme suit: 
+\[ f(u,v) = \dfrac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}. \]
 
 \vfill
 \begin{center}
@@ -308,39 +309,36 @@ Ce neurone aura pour entrées les coordonnées du point choisit et pour sortie l
 	\draw[->] (6.5,2.5)-- node[below, align=center] {$\left[0,1\right]$} (7.8,2.5)-- (8,2.5);
 	\draw[->] (0.7,3.5) node [below] {$u$} -- node [below] {$w_{1}$} (2.6,3);
 	\draw[->] (0.7,1.5) node [below] {$v$}-- node [below] {$w_{n}$} (2.6,2);
-	\draw (4.5,2.5) node {$ \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}  $} circle [x radius= 2, y radius=1.1];
-	\draw (4.5,0) node { \textbf{figure 5 - exemple 2} };
+	\draw (4.5,2.5) node {$ \dfrac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}  $} circle [x radius= 2, y radius=1.1];
+	\draw (4.5,0) node { \textbf{figure 6 - exemple 2} };
 \end{tikzpicture}
 \end{center}
 \vfill
 
-Nous définissons la fonction $\Phi_{x}(w_{1},w_{2},\theta)= \frac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}$ avec $x=(u,v)$.
-Soit $E$ un ensemble de triplet dont chaque triplet est définit de la manière suivante : 
+Soit la fonction $\Phi_{x}(w_{1},w_{2},\theta)= \dfrac{1}{1+e^{-w_{1}u-w_{2}v+\theta}}$ avec $x=(u,v)$.\\
+
+Soit $E$ un ensemble de triplets de la forme : 
 $x = (u,v,p)$ 	avec $u$ et $v$ l'abscisse et l'ordonnée du point $x$ et $p$ sa position par rapport à la droite $d$.
 
 	\[ \begin{cases} 0 &\mbox{Si  p est en dessous de d } \\
 				 0.5 & \mbox{Si p est sur d } \\
 				 1 & \mbox{Si p est au dessus de d }
 	 		 \end{cases} \] \\
-Soit $ C_x(w_{1},w_{2},\theta) = \frac{1}{2}(y(x)-\Phi_x(w_{1},w_{2},\theta))^{2} $ la fonction de coût de $N$ avec $y(x)=p$.
-Il suffit maintenant de calculer le gradient de la fonction $\gamma$ afin d'appliquer l'algorithme du Gradient pour que le réseau $N$ nous donne des valeurs proches de la réalité.\\
+	 		 
+Soit $ C_x(w_{1},w_{2},\theta) = \frac{1}{2}(y(x)-\Phi_x(w_{1},w_{2},\theta))^{2} $ la fonction de coût avec $y(x)=p$. Il suffit ensuite de minimiser le gradient de la fonction $\gamma$, décrite précédemment, afin d'obtenir les poids et inclinaison pour lesquelles le réseau $N$ nous donne des valeurs de position par rapport à la droite $d$, par interpolation sur les triplets de $E$.\\
 %************************************************** fin de l'exemple *****************************************************************
 \newline
 
 %faire l'exemple avec le neuronne et la droite de point, et faire une transition avec la retropropagation
 \subsection{Rétropropagation}
-Nous avons vu dans la partie précédente, comment nous pouvons minimiser la fonction $\gamma$ à condition d'avoir son gradient. Cette étape
-devient très vite fastidieuse lorsque le réseau de neurone est formé de plusieurs couches de plusieurs neurones, car la fonction qui
-définira ce réseau sera la composée de toutes les fonctions définissant les neurones contenu dans celui-ci. Ce problème va être résolue 
-grâce à la rétropropagation qui est une méthode qui va nous permettre de calculer le gradient de n'importe quelle réseau.
+Nous avons vu dans la partie précédente, comment nous pouvons minimiser la fonction $\gamma$ à condition d'avoir son gradient. Le calcul du gradient devient très vite compliqué lorsque le réseau de neurone est formé de plusieurs couches de plusieurs neurones. Ce calcul est possible, néanmoins, grâce à la méthode de rétropropagation du gradient.
 
-\subsection {B-Diagramme}
-Pour parler de la rétropropagation  nous nous devons d'introduire une nouvelle structure qui est le B-Diagramme (Backpropagation diagramme).
-Ce diagramme représente les neurones utilisés dans notre réseau mais dans lesquelles nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.\\
+Avant de parler de la rétropropagation, nous devons introduire une nouvelle structure qui est le B-Diagramme (\textit{Backpropagation diagram}).
+Ce diagramme représente les neurones utilisés dans notre réseau mais dans lesquelles nous stockons dans leurs partie gauche la valeur de la dérivée de leurs fonction et dans leurs partie droite la valeur de leurs fonction pour une entrée donnée.
 \newline
 % préciser les dérivéees partielle dans le diagramme
 %************************************************** début de la figure *****************************************************************
-\vfill
+%\vfill
 \begin{center}
 \begin{tikzpicture}[]
 	%\draw[help lines, thick] (0,0) grid (9,5);
@@ -350,17 +348,16 @@ Ce diagramme représente les neurones utilisés dans notre réseau mais dans les
 	\draw (4.5,2.5) circle [x radius= 2, y radius=1.1];
 	\draw (3.5,2.5) node { $f'$ };
 	\draw (5.5,2.5) node { $f$ };
-	\draw (4.5,0) node { \textbf{figure 6 - B-Diagramme} };
+	\draw (4.5,0) node { \textbf{figure 7 - B-Diagramme} };
 \end{tikzpicture}
 \end{center}
-\vfill
+%\vfill
 %************************************************** fin de la figure *****************************************************************
  
-La rétropropagation ce divise en deux étapes :
+La rétropropagation se divise en deux étapes :
 \begin{enumerate}
-\item L'étape de feed-forward : Cette étape consiste à parcourir notre réseau de gauche à droite afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculé et comme dit précédemment chaque valeurs seront stockées dans leurs côté respective. Le résultat stocké à droite sera ensuite transmit au nœud suivant et le processus sera réitéré. % la régle avec leur et leurs
-\item L'étape de rétropropagation : Dans cette étape le réseau sera parcouru de droite à gauche et la valeur stockée à gauche sera 
-utilisée. Cette étape est divisée en plusieurs cas :
+\item L'étape de \textit{feed-forward} : Cette étape consiste à parcourir notre réseau dans le sens direct afin de calculer pour chaque neurone, la valeur de sa fonction et de sa dérivée pour une valeur donnée. Une fois calculés, ces valeurs seront stockées dans chacun des neurones. Le résultat stocké à droite sera ensuite transmit au nœud suivant et le processus sera réitéré. % la régle avec leur et leurs
+\item L'étape de rétropropagation : Dans cette étape le réseau sera parcouru dans le sens indirect et la valeur stockée à gauche sera utilisée, selon les cas suivants :
 \begin{enumerate}
 \item La composition  : Le réseau prend en entrée la constante 1. Celle-ci est multipliée par la valeur stockée dans la partie gauche du neurone. Le résultat sera ensuite transmis à l'unité suivante dans laquelle la constante sera multipliée par sa valeur de gauche. Le résultat final sera alors égale à $f'(g(x)).g'(x)$.
 %************************************************** début de la figure *****************************************************************
@@ -380,7 +377,7 @@ utilisée. Cette étape est divisée en plusieurs cas :
 	\draw (2.5,2.5) node {$g(x)$};
 	\draw (5.3,2.5) node {$f'(g(x))$};
 	\draw (6.6,2.5) node {$f(g(x))$};
-	\draw (4.5,0) node { \textbf{figure 7 - B-Diagramme} };
+	\draw (4.5,0) node { \textbf{figure 8 - B-Diagramme} };
 \end{tikzpicture}
 \end{center}
 \vfill
@@ -398,7 +395,7 @@ utilisée. Cette étape est divisée en plusieurs cas :
 	\draw  (4,1)--(4,2);
 	\draw  (4,3)--(4,4);
 	\draw  (7.5,3)--(7.5,2);
-	\draw (-1,2.5) node {$f_{1}(x)+f_2(x)$};
+	\draw (-1,2.5) node {$f'_{1}(x)+f'_2(x)$};
 	\draw (3.5,1.5) node {$f'_{1}(x)$};
 	\draw (3.5,3.5) node {$f'_2(x)$};
 	\draw (4.5,1.5) node {$f_{1}(x)$};
@@ -408,13 +405,14 @@ utilisée. Cette étape est divisée en plusieurs cas :
 	\draw (4,1.5) circle [x radius= 1, y radius=0.5];
 	\draw (4,3.5) circle [x radius= 1, y radius=0.5];
 	\draw (7.5,2.5) circle [x radius= 1, y radius=0.5];
-	\draw (4.5,0) node { \textbf{figure 8 - B-Diagramme} };
+	\draw (4.5,0) node { \textbf{figure 9 - B-Diagramme} };
 \end{tikzpicture}
 \end{center}
 \vfill
+\newpage
 %************************************************** fin de la figure *****************************************************************
 \item Les entrées avec poids :
-\vfill
+%\vfill
 \begin{center}
 \begin{tikzpicture}[]
 	%\draw[help lines, thick] (0,0) grid (9,5);
@@ -430,23 +428,53 @@ utilisée. Cette étape est divisée en plusieurs cas :
 	\draw (4.5,2) node [below] {Rétropropagation};
 	\draw (4.5,4) node [below] {Feed-Forward};
 	\draw (2,4)--(7,4);
-	\draw (4.5,0) node { \textbf{figure 9 - B-Diagramme} };
+	\draw (4.5,0) node { \textbf{figure 10 - B-Diagramme} };
 \end{tikzpicture}
 \end{center}
-\vfill
+%\vfill
 \end{enumerate}
 \end{enumerate}
-\newpage
-\section{Réseau de neurone et résolution de formule booléenne quantifiée}
-Dans la partie précédente nous avons vu comment un réseau de neurone pouvait être entrainé et ainsi devenir plus performant. Dans cette partie, nous allons voir comment nous pouvons entrainer un réseau de neurone afin que celui-ci puisse résoudre des formules booléennes quantifiées.
+\section{Résolution de QBF-SAT}
+Dans la partie précédente nous avons vu comment le processus d'apprentissage fonctionne. Dans cette partie, nous allons voir comment nous pouvons entrainer un réseau de neurone afin que celui-ci puisse résoudre des formules booléennes quantifiées.
 Afin qu'un réseau de neurone puisse résoudre une formule QBF, il faut que celle-ci soit mise sous forme prénexe.
 \subsection{Définition : Forme prénexe}
 	On dit que une formule et sous forme prénexe si tout ses quantificateurs existentiels et universels sont placés au début de la formule. 
 	\[ G= Q_{1}x_{1}Q_{2}x_{2}....Q_{n}x_{2}G' \] avec $G'$ une formule booléenne sans quantificateur.
-\newline 
-Pour résoudre une formule on utilisera deux réseaux qui s'affronteront dans un jeu. Un réseau représentera les quantificateurs universels et l'autre représentera les quantificateurs existentiels. Celui qui représentera les quantificateurs universels aura pour but de choisir des valuations pour les variables qui permettrons de rendre la formule fausse. Le réseau qui représentera les quantificateur existentiels aura pour but de choisir des valuations pour les variables qui permettrons de rendre vrai la formule. Lorsque l'algorithme sera terminé, on aura une valeur qui tendra soit vers 0 si la formule est supposé être fausse (donc le réseau universels aura gagné)  soit vers 1 pour le cas contraire (le réseau existentiels aura gagné). 
-\\
-Les deux réseaux de neurone que nous utilisons sont constitués de la même façon. Leur constitution est donnée par le schéma suivant.
+\newline
+\subsection{Définition : Forme Normale Conjonctive (CNF)}
+Soit $F$ une formule booléenne et $(C_i)_{1\leq i \leq n}$ une famille de clauses telles que
+\[F = C_1\land C_2 \land ... \land C_n\]
+On dit alors que F est sous forme normale conjonctive.
+
+\subsection{Format QDimacs}
+Le format standard QDimacs permet de décrire des formules booléennes quantifiées qui sont prénexes et sous forme normale conjonctive. Il est compatible avec le format standard Dimacs des SAT-\textit{solver}.\\
+
+La première ligne d'un fichier de type QDimacs est toujours de la forme "p cnf $v$ $c$" où $v$ est le nombre de variables et $c$ le nombre de clauses que contient la formule. Les variables étant numérotées de $1$ à $v$.\\
+
+Le fichier contient ensuite un nombre potentiellement nul de lignes, se terminant par $0$, et décrivant l'ordre et la nature des quantificateurs. Une telle ligne définit des variables quantifiées existentiellement si elle commence par le caractère $e$, et universellement si elle commence par $a$.\\
+Toute variable qui n'apparait dans aucune de ces ligne est supposée quantifiée existentiellement au tout début de la formule.\\
+
+Les lignes suivantes du fichier décrivent les clauses de la formule une à une. Chaque ligne se termine par $0$ et liste toutes les variables de la clause, les variables sont négatives si elles apparaissent niées dans la clause, et positives sinon.\\
+ 
+\textbf{Exemple de fichier en format QDimacs :}
+\begin{framed}
+\texttt{\\
+p cnf 5 2\\ 
+	a 1 4 0\\
+	e 3 0\\
+	a 2 0\\
+	1 -2 4 0\\
+	-3 4 5 0
+}
+\end{framed}
+Ce fichier décrit la formule suivante : 
+\[\exists x_5 \forall x_1 \forall x_4 \exists x_3 \forall x_2 \quad (x_1 \land \neg x_2 \land x_4 ) \lor (\neg x_3 \land x_4 \land x_5)\] 
+
+
+\subsection{Choix des réseaux de neurones}
+Pour résoudre une formule on utilisera deux réseaux qui s'affronteront dans un jeu. Un réseau représentera les quantificateurs universels et l'autre représentera les quantificateurs existentiels. Celui qui représentera les quantificateurs universels aura pour but de choisir des valuations qui permettront de rendre la formule fausse. Le réseau qui représentera les quantificateur existentiels aura pour but de choisir des valuations qui permettront de rendre vraie la formule. Au fur et mesure de l'exécution de l'algorithme, le pourcentage de victoires du réseau existentiel tendra vers $0\%$ si la formule est fausse et vers $100\%$ si elle est vraie. Les deux réseaux de neurone auront la même structure.\newpage
+
+Leur structure est donnée par le schéma suivant :
 
 %% Exprime le réseau de neurone qu'on a 
 \begin{center}
@@ -478,34 +506,9 @@ Les deux réseaux de neurone que nous utilisons sont constitués de la même fa�
 	\draw (2.5,4.5) node {\textbf{Couche d'entrée}}; 
 	\draw (5.5,4.5) node {\textbf{Couche cachée}}; 
 	\draw (8.5,4.5) node {\textbf{Couche de sortie}}; 
-	\draw (5.5,0) node { \textbf{figure 10 - Constitution des réseaux de neurones }};
+	\draw (5.5,0) node { \textbf{figure 11 - Structure des réseaux de neurones }};
 \end{tikzpicture}
 \end{center}
-
-\subsection{Format qdimacs}
-Pour fonctionner, notre algorithme a besoin d'une formule QBF qu'on lui donnera via un fichier sous format qdimacs. Ce format, est le format standard des QBF solvers.
-Un fichier de type qdimacs commence toujours par "p cnf $m$ $n$" où m est le nombre de variables et n le nombre de clauses que contient la formule. Chaque variable apparaîtra dans le fichier sous forme d'entier compris entre 1 et m. Si la variable est négative cela signifie qu'on prends sa négation. Les affectations des quantificateurs aux variables se fait au début du fichier juste aprés la ligne "p cnf m n".
-On affecte un quantificateur existentiel à la varialbe $n_1$ de la manière suivante : e $n_1$ 0 \\
-On affecte un quantificateur universel à la varialbe $n_1$ de la manière suivante : a $n_1$ 0 \\
-On ne peut pas mettre à la suite deux affectations de quantificateurs de même type, on doit faire l'affectation en une seul ligne.
-Chaque ligne qui déclare une clause se termine par 0.
-Les variables qui ne sont pas rattaché à un quantifiateur sont considérées comme étant existentiels.\\ 
-\textbf{Exemple de fihier en format qdimacs :} \\
-\\
-p cnf 4 4\\ 
-e 1 0\\
-a 2 0\\
-e 3 0\\
-a 4 0\\
-1 -2 0\\
-2 -1 0\\
-4 -3 0\\
-3 -4 0\\
-
-Ce fichier représente la clause suivante : \\ 
-$\exists x \forall y \exists z \forall t (x \land y) \lor (y \land \lnot x) \lor (t \land \lnot z) \lor (z \land \lnot t) $  
-
-
 
 \subsection{Déscription de l'algortihme}
 L'algorithme que nous utiliserons est le suivant.
