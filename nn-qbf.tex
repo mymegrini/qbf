@@ -401,11 +401,9 @@ Afin qu'un réseau de neurone puisse résoudre une formule QBF, il faut que cell
 \subsection{Définition : Forme prénexe}
 	On dit que une formule et sous forme prénexe si tout ses quantificateurs existentiels et universels sont placés au début de la formule. 
 	\[ G= Q_{1}x_{1}Q_{2}x_{2}....Q_{n}x_{2}G' \] avec $G'$ une formule booléenne sans quantificateur.
-\newline \\
- On utilisera deux réseaux de neurone qui s'affronteront dans un jeu dont les règles sont les suivante : 
-	%% à compléter
-	%% Développer le jeu 
-
+\newline 
+Pour résoudre une formule on utilisera deux réseaux qui s'affronteront dans un jeu. Un réseau représentera les quantificateurs universels et l'autre représentera les quantificateurs existentiels. Celui qui représentera les quantificateurs universels aura pour but de choisir des valuations pour les variables qui permettrons de rendre la formule fausse. Le réseau qui représentera les quantificateur existentiels aura pour but de choisir des valuations pour les variables qui permettrons de rendre vrai la formule. Lorsque l'algorithme sera terminé, on aura une valeur qui tendra soit vers 0 si la formule est supposé être fausse (donc le réseau universels aura gagné)  soit vers 1 pour le cas contraire (le réseau existentiels aura gagné). 
+\\
 Les deux réseaux de neurone que nous utilisons sont constitués de la même façon. Leur constitution est donnée par le schéma suivant.
 
 %% Exprime le réseau de neurone qu'on a 
@@ -441,4 +439,41 @@ Les deux réseaux de neurone que nous utilisons sont constitués de la même fa�
 	\draw (5.5,0) node { \textbf{figure 10 - Constitution des réseaux de neurones }};
 \end{tikzpicture}
 \end{center}
+
+\subsection{Format qdimacs}
+Pour fonctionner, notre algorithme a besoin d'une formule QBF qu'on lui donnera via un fichier sous format qdimacs. Ce format, est le format standard des QBF solvers.
+Un fichier de type qdimacs commence toujours par "p cnf $m$ $n$" où m est le nombre de variables et n le nombre de clauses que contient la formule. Chaque variable apparaîtra dans le fichier sous forme d'entier compris entre 1 et m. Si la variable est négative cela signifie qu'on prends sa négation. Les affectations des quantificateurs aux variables se fait au début du fichier juste aprés la ligne "p cnf m n".
+On affecte un quantificateur existentiel à la varialbe $n_1$ de la manière suivante : e $n_1$ 0 \\
+On affecte un quantificateur universel à la varialbe $n_1$ de la manière suivante : a $n_1$ 0 \\
+On ne peut pas mettre à la suite deux affectations de quantificateurs de même type, on doit faire l'affectation en une seul ligne.
+Chaque ligne qui déclare une clause se termine par 0.
+Les variables qui ne sont pas rattaché à un quantifiateur sont considérées comme étant existentiels.\\ 
+\textbf{Exemple de fihier en format qdimacs :} \\
+\\
+p cnf 4 4\\ 
+e 1 0\\
+a 2 0\\
+e 3 0\\
+a 4 0\\
+1 -2 0\\
+2 -1 0\\
+4 -3 0\\
+3 -4 0\\
+
+Ce fichier représente la clause suivante : \\ 
+$\exists x \forall y \exists z \forall t (x \land y) \lor (y \land \lnot x) \lor (t \land \lnot z) \lor (z \land \lnot t) $  
+
+
+
+\subsection{Déscription de l'algortihme}
+L'algorithme que nous utiliserons est le suivant.
+	\begin{algorithm}
+	\caption{Apprentissage profond et QBF}
+	\begin{algorithmic}
+	\REQUIRE  
+	\STATE   
+	\STATE  
+	\end{algorithmic}
+	\end{algorithm} 
+
 \end{document}
