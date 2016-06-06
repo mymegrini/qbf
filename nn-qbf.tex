@@ -559,7 +559,7 @@ La matrice des poids de la couche d'entrée est une matrice carrée, celle de la
 	\item \textbf{build:} prend en entrée le couple $(s,v,r)$ et renvoie les données d'expérience $us,uv$ pour le réseau \textit{UNI} et $es,ev$ pour le réseau \textit{EXI}, $us$ et $es$ contiennent les états rencontrés par les deux réseaux, $uv$ et $ev$ contiennent les nouvelles valeurs cibles pour la phase d'apprentissage
 	\item \textbf{store:} prend en entrée les données d'expérience $us,uv$ et $es,ev$ et les enregistre respectivement dans les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$  
 	\item \textbf{train:} effectue la phase d'apprentissage pour chacun des réseaux en utilisant les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$ en utilisant comme critère la fonction d'erreur quadratique moyenne et comme algorithme d'optimisation la descente de gradient
-	\item \textbf{train:} calcule le pourcentage de victoire du réseau \textit{UNI} et l'affiche
+	\item \textbf{percentage:} calcule le pourcentage de victoire du réseau \textit{UNI} et l'affiche
 	\end{enumerate}
 	
 	Ainsi donc, la convergence vers $0\%$ ou $100\%$ du pourcentage affiché par le programme permet d'obtenir une indication concernant la valeur de vérité de la formule donnée.\\
@@ -583,8 +583,10 @@ La résolution de formules booléennes quantifiées reste un problème complexe.
 \item L'exécution est assez lente
 \item Le résultat obtenu reste purement heuristique et n'offre pas de certitude quand à la satisfaisabilité de la formule
 \end{enumerate}
-Pour remédier à ces limitations, par exemple, on pourrait utiliser un modèle de réseaux de neurones plus complexes ou changer l'ensemble sur lequel on effectue l'apprentissage pour tenter de créer un algorithme plus général qui soit réexploitable. On pourrait aussi essayer d'optimiser l'utilisation de la mémoire afin d'accélérer l'exécution.\\
-L'utilisation de l'apprentissage automatique pour la résolution de QBF-SAT reste très prometteuses avec beaucoup de pistes à explorer.
+Pour remédier à ces limitations, par exemple, on pourrait utiliser un modèle de réseaux de neurones plus complexe ou changer l'ensemble sur lequel on effectue l'apprentissage pour tenter de créer un algorithme plus général qui soit réexploitable. On pourrait aussi essayer d'optimiser l'utilisation de la mémoire afin d'accélérer l'exécution.\\
+L'utilisation de l'apprentissage automatique pour la résolution de QBF-SAT reste très prometteuse avec beaucoup de pistes à explorer.
 
+\section{Références}
+[1] Raul Rojas. Neural Networks, 1996. 
 \newpage
 \end{document}
