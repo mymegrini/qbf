@@ -14,14 +14,13 @@
 \usepackage[]{algorithm}
 \usepackage[]{algorithmic}
 \usepackage{framed}
-\usepackage{cite}
 
 % fonction pour définir une fonction 
 \newcommand{\fonction}[5]{
     \begin{array}{ccccc}
 #1 & : & #2 & \to & #3\\
     & & #4 & \mapsto & #5\\ 
-	\end{array}
+    \end{array}
 }
 \renewcommand{\contentsname}{Table des matières}
 \begin{document}
@@ -547,6 +546,7 @@ La matrice des poids de la couche d'entrée est une matrice carrée, celle de la
 	\STATE store(us, uv, es, ev);
 	\STATE train(uni, uniMset, uniMval);
 	\STATE train(exi, exiMset, exiMval);
+	\STATE percentage(r)
 	\STATE $cmp++$;
 	\ENDWHILE
 	\end{algorithmic}
@@ -558,26 +558,33 @@ La matrice des poids de la couche d'entrée est une matrice carrée, celle de la
 	\item \textbf{result:} prend en entrée une session et renvoie un couple $(s,v)$ où $s$ correspond à ladite session et $r$ correspond à la valeur de vérité de la formule pour la valuation contenue dans s et leau session
 	\item \textbf{build:} prend en entrée le couple $(s,v,r)$ et renvoie les données d'expérience $us,uv$ pour le réseau \textit{UNI} et $es,ev$ pour le réseau \textit{EXI}, $us$ et $es$ contiennent les états rencontrés par les deux réseaux, $uv$ et $ev$ contiennent les nouvelles valeurs cibles pour la phase d'apprentissage
 	\item \textbf{store:} prend en entrée les données d'expérience $us,uv$ et $es,ev$ et les enregistre respectivement dans les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$  
-	\item \textbf{train:} effectue la phase d'apprentissage pour chacun des réseaux en utilisant les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$ 
-	\end{enumerate}	 
-\newpage	
-\section{Langage Lua et Torch}
-Le programme que nous avons décrit plus haut a été implémenté à l'aide d'un langage de script s'appelant Lua. Dans cette partie nous allons parler de ce langage de script et de sa librairie Torch spécialement conçue pour le domaine du "machine learning" 
+	\item \textbf{train:} effectue la phase d'apprentissage pour chacun des réseaux en utilisant les données d'apprentissage $uniMset, uniMval$ et $exiMset, exiMval$ en utilisant comme critère la fonction d'erreur quadratique moyenne et comme algorithme d'optimisation la descente de gradient
+	\item \textbf{train:} calcule le pourcentage de victoire du réseau \textit{UNI} et l'affiche
+	\end{enumerate}
+	
+	Ainsi donc, la convergence vers $0\%$ ou $100\%$ du pourcentage affiché par le programme permet d'obtenir une indication concernant la valeur de vérité de la formule donnée.\\
+	
+\section{Implémentation effective}
+Le programme que nous avons décrit plus haut a été implémenté à l'aide d'un langage de script s'appelant Lua et en utilisant la librairie Torch, conçue pour le domaine d'apprentissage automatique. Il est fournit en complément de ce rapport.
 	\subsection{Lua}
-	Lua est un langage de script développé par une équipe de chercheurs brésiliens de l'Université pontificale Catholique de Rio de Janeiro.
-	Sa réputation de langage portable est due au fait qu'il a été conçu en C. Ceci, permet à tout programme écrit en Lua d'être interprété dans une machine possédant le compilateur standard du langage C.
-En plus d'être portable, Lua est aussi reconnu pour être facilment utilisable avec d'autre langage tel que le Java, C\#, Fortan ou bien d'autre langage de script tel que le Perl ou le Ruby.
-Ce puissant langage étant rapide et léger a pu donné naissance à une librairie conçu pour le machine learning s'appelant Torch.
+	Lua est un langage de script, développé par une équipe de chercheurs brésiliens de l'Université pontificale Catholique de Rio de Janeiro, qui a le mérite d'être rapide et portable (car implémenté en C) en plus d'être facilement utilisable avec d'autres langages tel que le Java, C\#, Fortan ou bien d'autre langage de script tel que le Perl ou le Ruby. Il est celui utilisé par la librairie Torch.
 	
 	\subsection{Torch}
-	Torch comme dit précédement est une librairie d'algorithme scientifique du langage Lua conçu pour le machine learning. Cette librairie, permet d'avoir accés aux outils nécéssaire à l'utilisation de l'apprentissage profond. Elle offre une implémentation efficace et simple d'utilité des réseaux de neuronnes ainsi que tout les algorithme d'optimisation. Cette librarie doit sa popularité à la rapidité et la portabilité du langage Lua.
-\newpage 
+	Torch comme est une librairie d'algorithme scientifique du langage Lua conçu pour l'apprentissage automatique. Cette librairie, permet d'avoir accès aux outils nécessaires à l'utilisation de l'apprentissage profond. Elle offre une implémentation efficace et simple des réseaux de neuronnes ainsi que de plusieurs algorithmes d'optimisation.\\
+
+%% peut être un exemple de code concret ?  
+
+
 \section{Conclusion}
-Le mélange apprentissage profond et QBF-SAT solver nous a donnée quelque chose de très intéréssant mais avec certaine contrainte. En effet, à travers notre implémentation et les deux formules de test que nous avons fournit avec, nous avons pu voir que l'algorithme prenait assez de temps pour nous sortir un résultat proche de la réalité. Cette attente est due au fait que chaque réseau de neurone utilisé doit apprendre tout au long de l'exécution de l'algorithme.
+Ce projet s'inscrit dans une démarche expérimentale. De ce fait, l'algorithme proposé est tout à fait original.\\
+La résolution de formules booléennes quantifiées reste un problème complexe. En conséquence, notre algorithme souffre de sérieuses limitations :
+\begin{enumerate}
+\item L'apprentissage effectué est spécifique à une formule particulière et n'est donc pas réexploitable
+\item L'exécution est assez lente
+\item Le résultat obtenu reste purement heuristique et n'offre pas de certitude quand à la satisfaisabilité de la formule
+\end{enumerate}
+Pour remédier à ces limitations, par exemple, on pourrait utiliser un modèle de réseaux de neurones plus complexes ou changer l'ensemble sur lequel on effectue l'apprentissage pour tenter de créer un algorithme plus général qui soit réexploitable. On pourrait aussi essayer d'optimiser l'utilisation de la mémoire afin d'accélérer l'exécution.\\
+L'utilisation de l'apprentissage automatique pour la résolution de QBF-SAT reste très prometteuses avec beaucoup de pistes à explorer.
 
 \newpage
-
-\section{Références}
-[1] Raul Rojas. Neural Networks, 1996. 
-  
 \end{document}
