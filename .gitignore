@@ -5,6 +5,9 @@
 !*.tex
 !*.output
 !*.sh
+!*.png
+!*.jpg
+!*.pdf
 !data
 *~
 .*
